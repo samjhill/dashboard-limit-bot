@@ -123,6 +123,24 @@ export const Stats = () => {
       )
       .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
     
+    const dcaComparisonAveragePrice = Object.values(groupedStats)
+      .map((statsForDay) =>
+        statsForDay
+          .map((stat) => ({
+            name: moment(stat.datetime).format("MM/DD/YY"),
+            averageDcaPrice: stat.average_dca_price,
+            ticker: stat.ticker,
+          }))
+          .reduce(
+            (prev, cur) => ({
+              ...prev,
+              name: cur.name,
+              [`${cur.ticker}AverageDcaPrice`]: cur.averageDcaPrice,
+            }),
+            {}
+          )
+      )
+      .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
 
   const btcDollarsSpent =
     dollarsSpent[dollarsSpent.length - 1].btcusdTotalSpend;
@@ -134,6 +152,14 @@ export const Stats = () => {
 
   const ethCoinsPurchased =
     coinsPurchased[coinsPurchased.length - 1].ethusdCoinAmount;
+
+  const btcDcaComparisonPrice =
+    dcaComparisonAveragePrice[dcaComparisonAveragePrice.length - 1]
+      .btcusdAverageDcaPrice;
+
+  const ethDcaComparisonPrice =
+    dcaComparisonAveragePrice[dcaComparisonAveragePrice.length - 1]
+      .ethusdAverageDcaPrice;
 
   return (
     <>
@@ -150,7 +176,14 @@ export const Stats = () => {
       <Box textAlign="left" p="2">
         <Text as="h3">Average price per coin</Text>
         <Text>Bitcoin: ${Math.round(btcDollarsSpent / btcCoinsPurchased)}</Text>
-        <Text>Ethereum: ${Math.round(ethDollarsSpent / ethCoinsPurchased)}</Text>
+        <Text>
+          Ethereum: ${Math.round(ethDollarsSpent / ethCoinsPurchased)}
+        </Text>
+      </Box>
+      <Box textAlign="left" p="2">
+        <Text as="h3">Price per coin if we used a Dollar-Cost-Average strategy</Text>
+        <Text>Bitcoin: ${btcDcaComparisonPrice}</Text>
+        <Text>Ethereum: ${ethDcaComparisonPrice}</Text>
       </Box>
       <Box textAlign="left" p="2">
         <Text as="h3">Advantage compared to DCA</Text>
@@ -173,7 +206,7 @@ export const Stats = () => {
               <XAxis dataKey="name" />
               <Tooltip />
               <Legend />
-              <CartesianGrid stroke="#f5f5f5" />
+              <CartesianGrid />
               <Line
                 type="monotone"
                 dataKey="btcusd"
@@ -202,7 +235,7 @@ export const Stats = () => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
@@ -231,7 +264,7 @@ export const Stats = () => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
+              <CartesianGrid />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
