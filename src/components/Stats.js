@@ -163,7 +163,13 @@ export const Stats = () => {
 
   return (
     <>
-      <Flex flexDirection={["column", "row"]} mb="4" mt="2" w={1} justifyContent="space-between">
+      <Flex
+        flexDirection={["column", "row"]}
+        mb="4"
+        mt="2"
+        w={1}
+        justifyContent="space-between"
+      >
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Dollars spent</Text>
           <Text>Bitcoin: ${btcDollarsSpent}</Text>
@@ -208,10 +214,10 @@ export const Stats = () => {
               data={savingsPercentages}
               margin={{ top: 5, right: 5, left: 10, bottom: 5 }}
             >
-              <XAxis dataKey="name" />
+              <XAxis dataKey="name" stroke="#ebebeb" />
               <Tooltip />
               <Legend />
-              <CartesianGrid />
+              <CartesianGrid stroke="#333" />
               <Line
                 type="monotone"
                 dataKey="btcusd"
@@ -240,9 +246,9 @@ export const Stats = () => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid />
-              <XAxis dataKey="name" />
-              <YAxis />
+              <CartesianGrid stroke="#333" />
+              <XAxis dataKey="name" stroke="#ebebeb" />
+              <YAxis stroke="#ebebeb" />
               <Tooltip />
               <Legend />
               <Bar dataKey="btcusdActual" name="actual" fill="#8884d8" />
@@ -269,9 +275,9 @@ export const Stats = () => {
                 bottom: 5,
               }}
             >
-              <CartesianGrid />
-              <XAxis dataKey="name" />
-              <YAxis />
+              <CartesianGrid stroke="#333" />
+              <XAxis dataKey="name" stroke="#ebebeb" />
+              <YAxis stroke="#ebebeb" />
               <Tooltip />
               <Legend />
               <Bar dataKey="ethusdActual" name="actual" fill="#8884d8" />
