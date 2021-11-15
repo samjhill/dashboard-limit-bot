@@ -163,23 +163,23 @@ export const Stats = () => {
 
   return (
     <>
-      <Flex flexDirection={["column", "row"]} mb="4" mt="2">
-        <Box textAlign="left" p="2" w={1 / 3} minWidth="200px">
+      <Flex flexDirection={["column", "row"]} mb="4" mt="2" w={1} justifyContent="space-between">
+        <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Dollars spent</Text>
           <Text>Bitcoin: ${btcDollarsSpent}</Text>
           <Text>Ethereum: ${ethDollarsSpent}</Text>
         </Box>
-        <Box textAlign="left" p="2" w={1 / 3} minWidth="200px">
+        <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Coins purchased</Text>
           <Text>Bitcoin: {btcCoinsPurchased}</Text>
           <Text>Ethereum: {ethCoinsPurchased}</Text>
         </Box>
-        <Box textAlign="left" p="2" w={1 / 3} minWidth="200px">
+        <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Price per coin: Dollar-Cost-Average strategy</Text>
           <Text>Bitcoin: ${btcDcaComparisonPrice}</Text>
           <Text>Ethereum: ${ethDcaComparisonPrice}</Text>
         </Box>
-        <Box textAlign="left" p="2" w={1 / 3} minWidth="200px">
+        <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Price per coin: Limit Strategy</Text>
           <Text>
             Bitcoin: ${Math.round(btcDollarsSpent / btcCoinsPurchased)}
@@ -188,7 +188,7 @@ export const Stats = () => {
             Ethereum: ${Math.round(ethDollarsSpent / ethCoinsPurchased)}
           </Text>
         </Box>
-        <Box textAlign="left" p="2" w={1 / 3} minWidth="200px">
+        <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Advantage compared to DCA</Text>
           <Text>
             Bitcoin: {savingsPercentages[savingsPercentages.length - 1].btcusd}%
