@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/samjhill/dashboard-limit-bot/static/css/main.7fb24c2e.chunk.css",
-    "main.js": "/samjhill/dashboard-limit-bot/static/js/main.0f4beee4.chunk.js",
-    "main.js.map": "/samjhill/dashboard-limit-bot/static/js/main.0f4beee4.chunk.js.map",
-    "runtime-main.js": "/samjhill/dashboard-limit-bot/static/js/runtime-main.e213e59f.js",
-    "runtime-main.js.map": "/samjhill/dashboard-limit-bot/static/js/runtime-main.e213e59f.js.map",
-    "static/js/2.c9701562.chunk.js": "/samjhill/dashboard-limit-bot/static/js/2.c9701562.chunk.js",
-    "static/js/2.c9701562.chunk.js.map": "/samjhill/dashboard-limit-bot/static/js/2.c9701562.chunk.js.map",
-    "static/js/3.80e04830.chunk.js": "/samjhill/dashboard-limit-bot/static/js/3.80e04830.chunk.js",
-    "static/js/3.80e04830.chunk.js.map": "/samjhill/dashboard-limit-bot/static/js/3.80e04830.chunk.js.map",
-    "index.html": "/samjhill/dashboard-limit-bot/index.html",
-    "static/css/main.7fb24c2e.chunk.css.map": "/samjhill/dashboard-limit-bot/static/css/main.7fb24c2e.chunk.css.map",
-    "static/js/2.c9701562.chunk.js.LICENSE.txt": "/samjhill/dashboard-limit-bot/static/js/2.c9701562.chunk.js.LICENSE.txt"
+    "main.css": "/dashboard-limit-bot/static/css/main.7fb24c2e.chunk.css",
+    "main.js": "/dashboard-limit-bot/static/js/main.0f4beee4.chunk.js",
+    "main.js.map": "/dashboard-limit-bot/static/js/main.0f4beee4.chunk.js.map",
+    "runtime-main.js": "/dashboard-limit-bot/static/js/runtime-main.d46db5a5.js",
+    "runtime-main.js.map": "/dashboard-limit-bot/static/js/runtime-main.d46db5a5.js.map",
+    "static/js/2.c9701562.chunk.js": "/dashboard-limit-bot/static/js/2.c9701562.chunk.js",
+    "static/js/2.c9701562.chunk.js.map": "/dashboard-limit-bot/static/js/2.c9701562.chunk.js.map",
+    "static/js/3.80e04830.chunk.js": "/dashboard-limit-bot/static/js/3.80e04830.chunk.js",
+    "static/js/3.80e04830.chunk.js.map": "/dashboard-limit-bot/static/js/3.80e04830.chunk.js.map",
+    "index.html": "/dashboard-limit-bot/index.html",
+    "static/css/main.7fb24c2e.chunk.css.map": "/dashboard-limit-bot/static/css/main.7fb24c2e.chunk.css.map",
+    "static/js/2.c9701562.chunk.js.LICENSE.txt": "/dashboard-limit-bot/static/js/2.c9701562.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e213e59f.js",
+    "static/js/runtime-main.d46db5a5.js",
     "static/js/2.c9701562.chunk.js",
     "static/css/main.7fb24c2e.chunk.css",
     "static/js/main.0f4beee4.chunk.js"
