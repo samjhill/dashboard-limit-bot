@@ -251,12 +251,13 @@ export const Stats = () => {
               <YAxis stroke="#ebebeb" />
               <Tooltip />
               <Legend />
-              <Bar dataKey="btcusdActual" name="actual" fill="#8884d8" />
+
               <Bar
                 dataKey="btcusdComparison"
                 name="comparison"
                 fill="#82ca9d"
               />
+              <Bar dataKey="btcusdActual" name="actual" fill="#8884d8" />
             </BarChart>
           </ResponsiveContainer>
         </Box>
@@ -280,12 +281,13 @@ export const Stats = () => {
               <YAxis stroke="#ebebeb" />
               <Tooltip />
               <Legend />
-              <Bar dataKey="ethusdActual" name="actual" fill="#8884d8" />
+
               <Bar
                 dataKey="ethusdComparison"
                 name="comparison"
                 fill="#82ca9d"
               />
+              <Bar dataKey="ethusdActual" name="actual" fill="#8884d8" />
             </BarChart>
           </ResponsiveContainer>
         </Box>
