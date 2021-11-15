@@ -123,24 +123,42 @@ export const Stats = () => {
       )
       .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
     
+
+  const btcDollarsSpent =
+    dollarsSpent[dollarsSpent.length - 1].btcusdTotalSpend;
+  const ethDollarsSpent =
+    dollarsSpent[dollarsSpent.length - 1].ethusdTotalSpend;
+
+  const btcCoinsPurchased =
+    coinsPurchased[coinsPurchased.length - 1].btcusdCoinAmount;
+
+  const ethCoinsPurchased =
+    coinsPurchased[coinsPurchased.length - 1].ethusdCoinAmount;
+
   return (
     <>
       <Box textAlign="left" p="2">
         <Text as="h3">Dollars spent</Text>
-        <Text>
-          Bitcoin: ${dollarsSpent[dollarsSpent.length - 1].btcusdTotalSpend}
-        </Text>
-        <Text>
-          Ethereum: ${dollarsSpent[dollarsSpent.length - 1].ethusdTotalSpend}
-        </Text>
+        <Text>Bitcoin: ${btcDollarsSpent}</Text>
+        <Text>Ethereum: ${ethDollarsSpent}</Text>
       </Box>
       <Box textAlign="left" p="2">
         <Text as="h3">Coins purchased</Text>
+        <Text>Bitcoin: {btcCoinsPurchased}</Text>
+        <Text>Ethereum: {ethCoinsPurchased}</Text>
+      </Box>
+      <Box textAlign="left" p="2">
+        <Text as="h3">Average price per coin</Text>
+        <Text>Bitcoin: ${Math.round(btcDollarsSpent / btcCoinsPurchased)}</Text>
+        <Text>Ethereum: ${Math.round(ethDollarsSpent / ethCoinsPurchased)}</Text>
+      </Box>
+      <Box textAlign="left" p="2">
+        <Text as="h3">Advantage compared to DCA</Text>
         <Text>
-          Bitcoin: {coinsPurchased[coinsPurchased.length - 1].btcusdCoinAmount}
+          Bitcoin: {savingsPercentages[savingsPercentages.length - 1].btcusd}%
         </Text>
         <Text>
-          Ethereum: {coinsPurchased[coinsPurchased.length - 1].ethusdCoinAmount}
+          Ethereum: {savingsPercentages[savingsPercentages.length - 1].ethusd}%
         </Text>
       </Box>
       <Flex flexDirection={["column", "row"]}>
