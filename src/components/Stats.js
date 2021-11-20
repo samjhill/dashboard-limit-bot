@@ -15,6 +15,12 @@ import {
 } from "recharts";
 import { groupBy } from "underscore";
 
+const COLORS = {
+  btc: "orange",
+  eth: "#407aff",
+  comparison: "grey",
+};
+
 export const Stats = () => {
   const [stats, setStats] = useState();
 
@@ -25,6 +31,7 @@ export const Stats = () => {
         .then(
           (result) => {
             setStats(result);
+            console.log(result)
           },
           (error) => {
             console.error(error);
@@ -49,7 +56,7 @@ export const Stats = () => {
   const groupedStats = groupBy(stats, (stat) => {
     return moment(stat.datetime).startOf("day").format();
   });
-  
+
   const savingsPercentages = Object.values(groupedStats)
     .map((statsForDay) =>
       statsForDay
@@ -236,8 +243,8 @@ export const Stats = () => {
               <Tooltip />
               <Legend />
 
-              <Bar dataKey="dca" name="dca strategy" fill="#82ca9d" />
-              <Bar dataKey="limit" name="limit strategy" fill="#8884d8" />
+              <Bar dataKey="dca" name="dca strategy" fill={COLORS.comparison} />
+              <Bar dataKey="limit" name="limit strategy" fill={COLORS.btc} />
             </BarChart>
           </ResponsiveContainer>
         </Box>
@@ -264,8 +271,8 @@ export const Stats = () => {
               <Tooltip />
               <Legend />
 
-              <Bar dataKey="dca" name="dca strategy" fill="#82ca9d" />
-              <Bar dataKey="limit" name="limit strategy" fill="#8884d8" />
+              <Bar dataKey="dca" name="dca strategy" fill={COLORS.comparison} />
+              <Bar dataKey="limit" name="limit strategy" fill={COLORS.eth} />
             </BarChart>
           </ResponsiveContainer>
         </Box>
@@ -291,9 +298,9 @@ export const Stats = () => {
               <Bar
                 dataKey="btcusdComparison"
                 name="comparison"
-                fill="#82ca9d"
+                fill={COLORS.comparison}
               />
-              <Bar dataKey="btcusdActual" name="actual" fill="#8884d8" />
+              <Bar dataKey="btcusdActual" name="actual" fill={COLORS.btc} />
             </BarChart>
           </ResponsiveContainer>
         </Box>
@@ -321,9 +328,9 @@ export const Stats = () => {
               <Bar
                 dataKey="ethusdComparison"
                 name="comparison"
-                fill="#82ca9d"
+                fill={COLORS.comparison}
               />
-              <Bar dataKey="ethusdActual" name="actual" fill="#8884d8" />
+              <Bar dataKey="ethusdActual" name="actual" fill={COLORS.eth} />
             </BarChart>
           </ResponsiveContainer>
         </Box>
@@ -344,13 +351,13 @@ export const Stats = () => {
             <Line
               type="monotone"
               dataKey="btcusd"
-              stroke="orange"
+              stroke={COLORS.btc}
               yAxisId={0}
             />
             <Line
               type="monotone"
               dataKey="ethusd"
-              stroke="#407aff"
+              stroke={COLORS.eth}
               yAxisId={1}
             />
           </LineChart>
