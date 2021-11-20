@@ -25,7 +25,6 @@ export const Stats = () => {
         .then(
           (result) => {
             setStats(result);
-            console.log(result)
           },
           (error) => {
             console.error(error);
@@ -38,10 +37,19 @@ export const Stats = () => {
     return null;
   }
 
+  const statsSortedByDay = stats.sort((a, b) => moment(a.datetime) - moment(b.datetime));
+
+  const lastUpdated = moment(statsSortedByDay[statsSortedByDay.length - 1].datetime);
+  const nextUpdate = moment(lastUpdated).add(24, "hours"); 
+
+  const hoursUntilUpdate = moment.duration(
+    nextUpdate.diff(moment())
+  ).asHours();
+
   const groupedStats = groupBy(stats, (stat) => {
     return moment(stat.datetime).startOf("day").format();
   });
-
+  
   const savingsPercentages = Object.values(groupedStats)
     .map((statsForDay) =>
       statsForDay
@@ -153,16 +161,19 @@ export const Stats = () => {
   const ethCoinsPurchased =
     coinsPurchased[coinsPurchased.length - 1].ethusdCoinAmount;
 
+  const btcLimitStrategyPrice = Math.round(btcDollarsSpent / btcCoinsPurchased);
   const btcDcaComparisonPrice =
     dcaComparisonAveragePrice[dcaComparisonAveragePrice.length - 1]
       .btcusdAverageDcaPrice;
 
+  const ethLimitStrategyPrice = Math.round(ethDollarsSpent / ethCoinsPurchased);
   const ethDcaComparisonPrice =
     dcaComparisonAveragePrice[dcaComparisonAveragePrice.length - 1]
       .ethusdAverageDcaPrice;
 
   return (
     <>
+      <Text mt="2">Stats update in {Math.round(hoursUntilUpdate)} hours</Text>
       <Flex
         flexDirection={["column", "row"]}
         mb="4"
@@ -187,12 +198,8 @@ export const Stats = () => {
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Price per coin: Limit Strategy</Text>
-          <Text>
-            Bitcoin: ${Math.round(btcDollarsSpent / btcCoinsPurchased)}
-          </Text>
-          <Text>
-            Ethereum: ${Math.round(ethDollarsSpent / ethCoinsPurchased)}
-          </Text>
+          <Text>Bitcoin: ${btcLimitStrategyPrice}</Text>
+          <Text>Ethereum: ${ethLimitStrategyPrice}</Text>
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Advantage compared to DCA</Text>
@@ -207,30 +214,59 @@ export const Stats = () => {
       </Flex>
       <Flex flexDirection={["column", "row"]}>
         <Box width={[1, 1 / 3]} mt="2" mb="2">
-          <Text as="h3">Advantage compared to DCA</Text>
-          <Text>(percentage dollars saved per coin)</Text>
+          <Text as="h3">Bitcoin: price per coin comparison</Text>
           <ResponsiveContainer width="100%" height={400}>
-            <LineChart
-              data={savingsPercentages}
-              margin={{ top: 5, right: 5, left: 10, bottom: 5 }}
+            <BarChart
+              data={[
+                {
+                  dca: btcDcaComparisonPrice,
+                  limit: btcLimitStrategyPrice,
+                },
+              ]}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
             >
+              <CartesianGrid stroke="#333" />
               <XAxis dataKey="name" stroke="#ebebeb" />
+              <YAxis stroke="#ebebeb" />
               <Tooltip />
               <Legend />
+
+              <Bar dataKey="dca" name="dca strategy" fill="#82ca9d" />
+              <Bar dataKey="limit" name="limit strategy" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
+        <Box width={[1, 1 / 3]} mt="2" mb="2">
+          <Text as="h3">Ethereum: price per coin comparison</Text>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart
+              data={[
+                {
+                  dca: ethDcaComparisonPrice,
+                  limit: ethLimitStrategyPrice,
+                },
+              ]}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
               <CartesianGrid stroke="#333" />
-              <Line
-                type="monotone"
-                dataKey="btcusd"
-                stroke="orange"
-                yAxisId={0}
-              />
-              <Line
-                type="monotone"
-                dataKey="ethusd"
-                stroke="#407aff"
-                yAxisId={1}
-              />
-            </LineChart>
+              <XAxis dataKey="name" stroke="#ebebeb" />
+              <YAxis stroke="#ebebeb" />
+              <Tooltip />
+              <Legend />
+
+              <Bar dataKey="dca" name="dca strategy" fill="#82ca9d" />
+              <Bar dataKey="limit" name="limit strategy" fill="#8884d8" />
+            </BarChart>
           </ResponsiveContainer>
         </Box>
 
@@ -292,6 +328,34 @@ export const Stats = () => {
           </ResponsiveContainer>
         </Box>
       </Flex>
+
+      <Box width={[1, 1 / 3]} mt="2" mb="2">
+        <Text as="h3">Limit strategy advantage over time</Text>
+        <Text>(percentage dollars saved per coin)</Text>
+        <ResponsiveContainer width="100%" height={400}>
+          <LineChart
+            data={savingsPercentages}
+            margin={{ top: 5, right: 5, left: 10, bottom: 5 }}
+          >
+            <XAxis dataKey="name" stroke="#ebebeb" />
+            <Tooltip />
+            <Legend />
+            <CartesianGrid stroke="#333" />
+            <Line
+              type="monotone"
+              dataKey="btcusd"
+              stroke="orange"
+              yAxisId={0}
+            />
+            <Line
+              type="monotone"
+              dataKey="ethusd"
+              stroke="#407aff"
+              yAxisId={1}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </Box>
     </>
   );
 };
