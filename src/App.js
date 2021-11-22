@@ -27,6 +27,7 @@ function App() {
           </ul>
 
           <Routes>
+            <Route path="/" exact element={<OpenOrders />} />
             <Route path="/orders" element={<OpenOrders />} />
             <Route path="/stats" element={<Stats />} />
             <Route path="/trades" element={<Trades />} />
