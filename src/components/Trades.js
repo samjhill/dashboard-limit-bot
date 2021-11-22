@@ -43,7 +43,7 @@ export const Trades = () => {
   return (
     <>
       <Text as="h2" mt="4" ml="2" textAlign="left">
-        Trades
+        Buys
       </Text>
 
       {TICKERS.map((ticker) => (
