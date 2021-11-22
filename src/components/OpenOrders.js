@@ -10,14 +10,42 @@ import {
   ResponsiveContainer,
   ScatterChart,
   Scatter,
+  ReferenceLine,
 } from "recharts";
 
 const TICKERS = ["btcusd", "ethusd"];
 
 export const OpenOrders = () => {
   const [orders, setOrders] = useState();
+  const [prices, setPrices] = useState();
 
   useEffect(() => {
+    if (!prices) {
+      return Promise.all(
+        TICKERS.map((ticker) => {
+          return fetch(
+            `https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_price?ticker=${ticker}`
+          )
+            .then((res) => res.json())
+            .then(
+              (result) => {
+                return { ticker: ticker, result };
+              },
+              (error) => {
+                console.error(error);
+              }
+            );
+        })
+      ).then((result) => {
+        const prices = Object.values(result);
+        let pricesObj = {};
+        // eslint-disable-next-line array-callback-return
+        prices?.map((ticker) => {
+          pricesObj[ticker.ticker] = ticker.result;
+        });
+        setPrices(pricesObj);
+      });
+    }
     if (!orders) {
       return Promise.all(
         TICKERS.map((ticker) => {
@@ -48,7 +76,7 @@ export const OpenOrders = () => {
         setOrders(tradesObj);
       });
     }
-  }, [orders, setOrders]);
+  }, [prices, setPrices, orders, setOrders]);
 
   if (!orders) {
     return null;
@@ -62,7 +90,11 @@ export const OpenOrders = () => {
 
       <Flex width={1} flexDirection={["column", "row"]}>
         {TICKERS.map((ticker) => (
-          <Flex key={ticker} width={[1, 1 / 2]} flexDirection={["column", "row"]}>
+          <Flex
+            key={ticker}
+            width={[1, 1 / 2]}
+            flexDirection={["column", "row"]}
+          >
             <Box width={[1, 1 / 2]}>
               {orders[ticker] && (
                 <Box mt="2" mb="2" width={1}>
@@ -82,7 +114,13 @@ export const OpenOrders = () => {
                       <YAxis stroke="#ebebeb" />
                       <Tooltip />
                       <Legend />
-
+                      <ReferenceLine
+                        y={prices[ticker]}
+                        stroke="green"
+                        label="current price"
+                        alwaysShow={true}
+                        color="white"
+                      />
                       <Scatter dataKey="price" fill="white" />
                     </ScatterChart>
                   </ResponsiveContainer>
