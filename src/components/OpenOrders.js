@@ -117,8 +117,8 @@ export const OpenOrders = () => {
                       <ReferenceLine
                         y={prices[ticker]}
                         stroke="green"
-                        label="current price"
                         alwaysShow={true}
+                        label={{ value: "current price", fill: "white" }}
                         color="white"
                       />
                       <Scatter dataKey="price" fill="white" />
