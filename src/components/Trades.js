@@ -57,17 +57,17 @@ export const Trades = () => {
   return (
     <>
       <Text as="h2" mt="4" ml="2" textAlign="left">
-        Buys
+        Buy History
       </Text>
 
-      <Flex width="100%">
+      <Flex width={1} flexDirection={["column", "row"]}>
         {TICKERS.map((ticker) => (
-          <Box width={1}>
+          <Flex key={ticker} width={[1, 1 / 2]} flexDirection={["column", "row"]}>
             <Text textAlign="left" my="2" as="h3" ml="2">
               {ticker}
             </Text>
 
-            <Box width={1 / 2}>
+            <Box width={[1, 1 / 2]}>
               {trades[ticker] && (
                 <Box mt="2" mb="2">
                   <Text as="h3">Buy history</Text>
@@ -94,7 +94,7 @@ export const Trades = () => {
               )}
             </Box>
 
-            <Box key={ticker} ml="2" width={1 / 2}>
+            <Box key={ticker} ml="2" width={[1, 1 / 2]}>
               <table ml="4">
                 <thead>
                   <tr>
@@ -115,7 +115,7 @@ export const Trades = () => {
                 </tbody>
               </table>
             </Box>
-          </Box>
+          </Flex>
         ))}
       </Flex>
     </>

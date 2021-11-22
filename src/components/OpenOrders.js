@@ -42,7 +42,7 @@ export const OpenOrders = () => {
         const trades = Object.values(result);
         let tradesObj = {};
         // eslint-disable-next-line array-callback-return
-        trades.map((ticker) => {
+        trades?.map((ticker) => {
           tradesObj[ticker.ticker] = ticker.result;
         });
         setOrders(tradesObj);
@@ -62,7 +62,7 @@ export const OpenOrders = () => {
 
       <Flex width={1} flexDirection={["column", "row"]}>
         {TICKERS.map((ticker) => (
-          <Flex width={[1, 1 / 2]} flexDirection={["column", "row"]}>
+          <Flex key={ticker} width={[1, 1 / 2]} flexDirection={["column", "row"]}>
             <Box width={[1, 1 / 2]}>
               {orders[ticker] && (
                 <Box mt="2" mb="2" width={1}>
