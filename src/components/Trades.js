@@ -2,14 +2,10 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { Box, Text, Flex } from "rebass";
 import {
-  LineChart,
   XAxis,
   YAxis,
   Tooltip,
   CartesianGrid,
-  Line,
-  BarChart,
-  Bar,
   Legend,
   ResponsiveContainer,
   ScatterChart,
@@ -57,8 +53,6 @@ export const Trades = () => {
   if (!trades) {
     return null;
   }
-
-  console.log(trades);
 
   return (
     <>
