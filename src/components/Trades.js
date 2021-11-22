@@ -40,6 +40,7 @@ export const Trades = () => {
     return null;
   }
 
+  console.log(trades)
   return (
     <>
       <Text as="h2" mt="4" ml="2" textAlign="left">
@@ -63,7 +64,7 @@ export const Trades = () => {
               {trades[ticker] &&
                 Object.values(trades[ticker]).map((trade) => (
                   <tr key={trade.tid}>
-                    <td>{moment(trade.timestamp).format("MM/DD h:mm a")}</td>
+                    <td>{moment(trade.timestampms).format("MM/DD h:mm a")}</td>
                     <td>${trade.price}</td>
                     <td>{trade.amount}</td>
                   </tr>
