@@ -31,7 +31,6 @@ export const Stats = () => {
         .then(
           (result) => {
             setStats(result);
-            console.log(result);
           },
           (error) => {
             console.error(error);
