@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/dashboard-limit-bot/static/css/main.7fb24c2e.chunk.css",
-    "main.js": "/dashboard-limit-bot/static/js/main.8f1a8522.chunk.js",
-    "main.js.map": "/dashboard-limit-bot/static/js/main.8f1a8522.chunk.js.map",
+    "main.js": "/dashboard-limit-bot/static/js/main.f74f2014.chunk.js",
+    "main.js.map": "/dashboard-limit-bot/static/js/main.f74f2014.chunk.js.map",
     "runtime-main.js": "/dashboard-limit-bot/static/js/runtime-main.750ed05c.js",
     "runtime-main.js.map": "/dashboard-limit-bot/static/js/runtime-main.750ed05c.js.map",
-    "static/js/2.a85aad11.chunk.js": "/dashboard-limit-bot/static/js/2.a85aad11.chunk.js",
-    "static/js/2.a85aad11.chunk.js.map": "/dashboard-limit-bot/static/js/2.a85aad11.chunk.js.map",
+    "static/js/2.fa60eee9.chunk.js": "/dashboard-limit-bot/static/js/2.fa60eee9.chunk.js",
+    "static/js/2.fa60eee9.chunk.js.map": "/dashboard-limit-bot/static/js/2.fa60eee9.chunk.js.map",
     "static/js/3.88fa3f08.chunk.js": "/dashboard-limit-bot/static/js/3.88fa3f08.chunk.js",
     "static/js/3.88fa3f08.chunk.js.map": "/dashboard-limit-bot/static/js/3.88fa3f08.chunk.js.map",
     "index.html": "/dashboard-limit-bot/index.html",
     "static/css/main.7fb24c2e.chunk.css.map": "/dashboard-limit-bot/static/css/main.7fb24c2e.chunk.css.map",
-    "static/js/2.a85aad11.chunk.js.LICENSE.txt": "/dashboard-limit-bot/static/js/2.a85aad11.chunk.js.LICENSE.txt"
+    "static/js/2.fa60eee9.chunk.js.LICENSE.txt": "/dashboard-limit-bot/static/js/2.fa60eee9.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.750ed05c.js",
-    "static/js/2.a85aad11.chunk.js",
+    "static/js/2.fa60eee9.chunk.js",
     "static/css/main.7fb24c2e.chunk.css",
-    "static/js/main.8f1a8522.chunk.js"
+    "static/js/main.f74f2014.chunk.js"
   ]
 }
