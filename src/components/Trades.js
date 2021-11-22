@@ -62,15 +62,15 @@ export const Trades = () => {
 
       <Flex width={1} flexDirection={["column", "row"]}>
         {TICKERS.map((ticker) => (
-          <Flex key={ticker} width={[1, 1 / 2]} flexDirection={["column", "row"]}>
-            <Text textAlign="left" my="2" as="h3" ml="2">
-              {ticker}
-            </Text>
-
+          <Flex
+            key={ticker}
+            width={[1, 1 / 2]}
+            flexDirection={["column", "row"]}
+          >
             <Box width={[1, 1 / 2]}>
               {trades[ticker] && (
                 <Box mt="2" mb="2">
-                  <Text as="h3">Buy history</Text>
+                  <Text as="h3">Buy history: {ticker}</Text>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart
                       data={trades[ticker]}
