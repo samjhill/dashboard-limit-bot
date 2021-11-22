@@ -60,12 +60,12 @@ export const OpenOrders = () => {
         Open Orders
       </Text>
 
-      <Flex width="100%">
+      <Flex width={1} flexDirection={["column", "row"]}>
         {TICKERS.map((ticker) => (
-          <Flex width={1}>
-            <Box width={1 / 2}>
+          <Flex width={[1, 1 / 2]} flexDirection={["column", "row"]}>
+            <Box width={[1, 1 / 2]}>
               {orders[ticker] && (
-                <Box mt="2" mb="2">
+                <Box mt="2" mb="2" width={1}>
                   <Text as="h3">Open orders: {ticker}</Text>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart
@@ -90,7 +90,7 @@ export const OpenOrders = () => {
               )}
             </Box>
 
-            <Box key={ticker} ml="2" width={1 / 2}>
+            <Box key={ticker} ml="2" width={[1, 1 / 2]}>
               <table ml="4">
                 <thead>
                   <tr>
