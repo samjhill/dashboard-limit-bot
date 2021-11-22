@@ -71,7 +71,7 @@ export const OpenOrders = () => {
         let tradesObj = {};
         // eslint-disable-next-line array-callback-return
         trades?.map((ticker) => {
-          tradesObj[ticker.ticker] = ticker.result;
+          tradesObj[ticker?.ticker] = ticker?.result;
         });
         setOrders(tradesObj);
       });
