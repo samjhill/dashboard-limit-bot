@@ -1,6 +1,20 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { Box, Text, Flex } from "rebass";
+import {
+  LineChart,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Line,
+  BarChart,
+  Bar,
+  Legend,
+  ResponsiveContainer,
+  ScatterChart,
+  Scatter,
+} from "recharts";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -17,7 +31,11 @@ export const Trades = () => {
             .then((res) => res.json())
             .then(
               (result) => {
-                return { ticker: ticker, result: result };
+                const trades = result.map((trade) => ({
+                  ...trade,
+                  datetime: moment(trade.timestampms).format("MM/DD h:mm a"),
+                }));
+                return { ticker: ticker, result: trades };
               },
               (error) => {
                 console.error(error);
@@ -25,14 +43,14 @@ export const Trades = () => {
             );
         })
       ).then((result) => {
-          const trades = Object.values(result);
-          let tradesObj = {};
-          // eslint-disable-next-line array-callback-return
-          trades.map(ticker => {
-              tradesObj[ticker.ticker] = ticker.result;
-          });
-          setTrades(tradesObj);
+        const trades = Object.values(result);
+        let tradesObj = {};
+        // eslint-disable-next-line array-callback-return
+        trades.map((ticker) => {
+          tradesObj[ticker.ticker] = ticker.result;
         });
+        setTrades(tradesObj);
+      });
     }
   }, [trades, setTrades]);
 
@@ -40,39 +58,72 @@ export const Trades = () => {
     return null;
   }
 
-  console.log(trades)
+  console.log(trades);
+
   return (
     <>
       <Text as="h2" mt="4" ml="2" textAlign="left">
         Buys
       </Text>
 
-      {TICKERS.map((ticker) => (
-        <Box key={ticker} ml="2">
-          <Text textAlign="left" my="2">
-            {ticker}
-          </Text>
-          <table ml="4">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Price</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {trades[ticker] &&
-                Object.values(trades[ticker]).map((trade) => (
-                  <tr key={trade.tid}>
-                    <td>{moment(trade.timestampms).format("MM/DD h:mm a")}</td>
-                    <td>${trade.price}</td>
-                    <td>{trade.amount}</td>
+      <Flex width="100%">
+        {TICKERS.map((ticker) => (
+          <Box width={1}>
+            <Text textAlign="left" my="2" as="h3" ml="2">
+              {ticker}
+            </Text>
+
+            <Box width={1 / 2}>
+              {trades[ticker] && (
+                <Box mt="2" mb="2">
+                  <Text as="h3">Buy history</Text>
+                  <ResponsiveContainer width="100%" height={400}>
+                    <ScatterChart
+                      data={trades[ticker]}
+                      margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                      }}
+                    >
+                      <CartesianGrid stroke="#333" />
+                      <XAxis dataKey="datetime" stroke="#ebebeb" />
+                      <YAxis stroke="#ebebeb" />
+                      <Tooltip />
+                      <Legend />
+
+                      <Scatter dataKey="price" fill="white" />
+                    </ScatterChart>
+                  </ResponsiveContainer>
+                </Box>
+              )}
+            </Box>
+
+            <Box key={ticker} ml="2" width={1 / 2}>
+              <table ml="4">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Price</th>
+                    <th>Amount</th>
                   </tr>
-                ))}
-            </tbody>
-          </table>
-        </Box>
-      ))}
+                </thead>
+                <tbody>
+                  {trades[ticker] &&
+                    Object.values(trades[ticker]).map((trade) => (
+                      <tr key={trade.tid}>
+                        <td>{trade.datetime}</td>
+                        <td>${trade.price}</td>
+                        <td>{trade.amount}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </Box>
+          </Box>
+        ))}
+      </Flex>
     </>
   );
 };
