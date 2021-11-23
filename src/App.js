@@ -3,31 +3,80 @@ import { Configuration } from "./components/Configuration";
 import { Stats } from "./components/Stats";
 import { Trades } from "./components/Trades";
 import { OpenOrders } from "./components/OpenOrders";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
+import { Box, Flex } from "rebass";
+import React from 'react';
 
 function App() {
   const linkPrefix =
     process.env.NODE_ENV === "development" ? "" : "/dashboard-limit-bot";
 
+  const LinkContainer = ({ isActive = false, children }) => (
+    <Box
+      mb="4"
+      mr="2"
+      w="100%"
+      sx={{
+        a: {
+          width: "100%",
+          background: isActive ? "white" : "none",
+          color: isActive ? "#333" : "white",
+          border: "1px solid white",
+          padding: ".5rem",
+          textDecoration: "none"
+        },
+      }}
+    >
+      {children}
+    </Box>
+  );
+
+  const Links = () => {
+    const location = useLocation();
+
+    const links = [
+      {
+        path: `${linkPrefix}/orders`,
+        display: "Open Orders",
+      },
+      {
+        path: `${linkPrefix}/stats`,
+        display: "Stats",
+      },
+      {
+        path: `${linkPrefix}/trades`,
+        display: "Buy History",
+      },
+      {
+        path: `${linkPrefix}/configuration`,
+        display: "Configuration",
+      },
+    ];
+
+    return (
+      <Flex flexWrap="wrap" mt="3" ml="2" flexDirection={["row"]}>
+        {links.map((link) => (
+          <LinkContainer
+            isActive={location.pathname.includes(link.path)}
+          >
+            <Link to={link.path}>{link.display}</Link>
+          </LinkContainer>
+        ))}
+      </Flex>
+    );
+  };
+
   return (
     <div className="App">
       <Router>
         <div>
-          <ul style={{ listStyle: "none", textAlign: "left" }}>
-            <li>
-              <Link to={`${linkPrefix}/orders`}>Open Orders</Link>
-            </li>
-            <li>
-              <Link to={`${linkPrefix}/stats`}>Stats</Link>
-            </li>
-            <li>
-              <Link to={`${linkPrefix}/trades`}>Buy History</Link>
-            </li>
-            <li>
-              <Link to={`${linkPrefix}/configuration`}>Configuration</Link>
-            </li>
-          </ul>
-
+          <Links />
           <Routes>
             <Route
               path={`${linkPrefix}/`}
