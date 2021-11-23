@@ -6,32 +6,41 @@ import { OpenOrders } from "./components/OpenOrders";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
-  
+  const linkPrefix =
+    process.env.NODE_ENV === "development" ? "" : "/dashboard-limit-bot";
+
   return (
     <div className="App">
       <Router>
         <div>
           <ul style={{ listStyle: "none", textAlign: "left" }}>
             <li>
-              <Link to="/orders">Open Orders</Link>
+              <Link to={`${linkPrefix}/orders`}>Open Orders</Link>
             </li>
             <li>
-              <Link to="/stats">Stats</Link>
+              <Link to={`${linkPrefix}/stats`}>Stats</Link>
             </li>
             <li>
-              <Link to="/trades">Buy History</Link>
+              <Link to={`${linkPrefix}/trades`}>Buy History</Link>
             </li>
             <li>
-              <Link to="/configuration">Configuration</Link>
+              <Link to={`${linkPrefix}/configuration`}>Configuration</Link>
             </li>
           </ul>
 
           <Routes>
-            <Route path="/" exact element={<OpenOrders />} />
-            <Route path="/orders" element={<OpenOrders />} />
-            <Route path="/stats" element={<Stats />} />
-            <Route path="/trades" element={<Trades />} />
-            <Route path="/configuration" element={<Configuration />} />
+            <Route
+              path={`${linkPrefix}/`}
+              exact
+              element={<OpenOrders />}
+            />
+            <Route path={`${linkPrefix}/orders`} element={<OpenOrders />} />
+            <Route path={`${linkPrefix}/stats`} element={<Stats />} />
+            <Route path={`${linkPrefix}/trades`} element={<Trades />} />
+            <Route
+              path={`${linkPrefix}/configuration`}
+              element={<Configuration />}
+            />
           </Routes>
         </div>
       </Router>
