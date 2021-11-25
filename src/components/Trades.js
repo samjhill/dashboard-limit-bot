@@ -42,9 +42,10 @@ export const Trades = () => {
         const trades = Object.values(result);
         let tradesObj = {};
         // eslint-disable-next-line array-callback-return
-        trades.map((ticker) => {
-          tradesObj[ticker.ticker] = ticker.result;
-        });
+        trades
+          .map((ticker) => {
+            tradesObj[ticker.ticker] = ticker.result.reverse();
+          });
         setTrades(tradesObj);
       });
     }
@@ -105,13 +106,15 @@ export const Trades = () => {
                 </thead>
                 <tbody>
                   {trades[ticker] &&
-                    Object.values(trades[ticker]).map((trade) => (
-                      <tr key={trade.tid}>
-                        <td>{trade.datetime}</td>
-                        <td>${trade.price}</td>
-                        <td>{trade.amount}</td>
-                      </tr>
-                    ))}
+                    Object.values(trades[ticker])
+                      .reverse()
+                      .map((trade) => (
+                        <tr key={trade.tid}>
+                          <td>{trade.datetime}</td>
+                          <td>${trade.price}</td>
+                          <td>{trade.amount}</td>
+                        </tr>
+                      ))}
                 </tbody>
               </table>
             </Box>
