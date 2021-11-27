@@ -88,6 +88,13 @@ export const OpenOrders = () => {
         Open Orders
       </Text>
 
+      <Text textAlign="left" ml="2" mb="4">
+        If the <span style={{color: "green", fontWeight: "bold"}}>price (green line)</span> drops down to any of the{" "}
+        <strong>white dots (open buy orders)</strong>, the buy orders will be
+        triggered. Then, new orders will be created automatically, based on the
+        new price.
+      </Text>
+
       <Flex width={1} flexDirection={["column", "row"]}>
         {TICKERS.map((ticker) => (
           <Flex
@@ -98,7 +105,9 @@ export const OpenOrders = () => {
             <Box width={[1, 1 / 2]}>
               {orders[ticker] && (
                 <Box mt="2" mb="2" width={1}>
-                  <Text as="h3" mb="2">{ticker}</Text>
+                  <Text as="h3" mb="2">
+                    {ticker}
+                  </Text>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart
                       data={orders[ticker]}
@@ -118,7 +127,10 @@ export const OpenOrders = () => {
                         y={prices[ticker]}
                         stroke="green"
                         alwaysShow={true}
-                        label={{ value: `current price - $${prices[ticker]}`, fill: "white" }}
+                        label={{
+                          value: `current price - $${prices[ticker]}`,
+                          fill: "white",
+                        }}
                         color="white"
                       />
                       <Scatter dataKey="price" fill="white" />
