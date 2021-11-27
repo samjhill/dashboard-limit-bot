@@ -84,7 +84,7 @@ export const OpenOrders = () => {
 
   return (
     <>
-      <Text as="h2" mt="4" ml="2" textAlign="left">
+      <Text as="h1" mt="4" ml="2" mb="2" textAlign="left">
         Open Orders
       </Text>
 
@@ -98,7 +98,7 @@ export const OpenOrders = () => {
             <Box width={[1, 1 / 2]}>
               {orders[ticker] && (
                 <Box mt="2" mb="2" width={1}>
-                  <Text as="h3">Open orders: {ticker}</Text>
+                  <Text as="h3" mb="2">{ticker}</Text>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart
                       data={orders[ticker]}
@@ -118,7 +118,7 @@ export const OpenOrders = () => {
                         y={prices[ticker]}
                         stroke="green"
                         alwaysShow={true}
-                        label={{ value: "current price", fill: "white" }}
+                        label={{ value: `current price - $${prices[ticker]}`, fill: "white" }}
                         color="white"
                       />
                       <Scatter dataKey="price" fill="white" />
