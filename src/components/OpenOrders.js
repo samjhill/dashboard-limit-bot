@@ -89,9 +89,8 @@ export const OpenOrders = () => {
       </Text>
 
       <Text textAlign="left" ml="2" mb="4">
-        If the <span style={{color: "green", fontWeight: "bold"}}>price (green line)</span> drops down to any of the{" "}
-        <strong>white dots (open buy orders)</strong>, the buy orders will be
-        triggered. Then, new orders will be created automatically, based on the
+        If the asset's <span style={{color: "green", fontWeight: "bold"}}>price (green line)</span> drops down to any of the{" "}
+        <strong>white dots (open buy orders)</strong>, I buy it. Then, I create new orders based on the
         new price.
       </Text>
 
