@@ -11,6 +11,7 @@ import {
   ScatterChart,
   Scatter,
 } from "recharts";
+import { API_URLS, ENV } from "../App";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -22,7 +23,7 @@ export const Trades = () => {
       return Promise.all(
         TICKERS.map((ticker) => {
           return fetch(
-            `https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_trades_list?ticker=${ticker}`
+            `${API_URLS.getTradesList[ENV]}?ticker=${ticker}`
           )
             .then((res) => res.json())
             .then(

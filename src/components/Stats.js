@@ -14,6 +14,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { groupBy } from "underscore";
+import { API_URLS, ENV } from "../App";
 
 const COLORS = {
   btc: "orange",
@@ -26,7 +27,7 @@ export const Stats = () => {
 
   useEffect(() => {
     if (!stats) {
-      fetch("https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/stats")
+      fetch(API_URLS.getStats[ENV])
         .then((res) => res.json())
         .then(
           (result) => {
@@ -41,6 +42,10 @@ export const Stats = () => {
 
   if (!stats) {
     return <Text as="h1">Loading...</Text>;
+  }
+
+  if (stats.length === 0) {
+    return <Text as="h1">No data yet.</Text>
   }
 
   const statsSortedByDay = stats.sort(

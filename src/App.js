@@ -13,6 +13,26 @@ import {
 import { Box, Flex } from "rebass";
 import React from 'react';
 
+export const ENV = "dev";
+
+export const API_URLS = {
+  getPrice: {
+    dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_price",
+  },
+  getOpenOrders: {
+    dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_open_orders",
+  },
+  getTradesList: {
+    dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_trades_list",
+  },
+  getConfiguration: {
+    dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/configuration",
+  },
+  getStats: {
+    dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/stats",
+  },
+};
+
 function App() {
   const linkPrefix =
     process.env.NODE_ENV === "development" ? "" : "/dashboard-limit-bot";

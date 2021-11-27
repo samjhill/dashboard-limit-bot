@@ -12,6 +12,7 @@ import {
   Scatter,
   ReferenceLine,
 } from "recharts";
+import { API_URLS, ENV } from "../App";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -23,9 +24,7 @@ export const OpenOrders = () => {
     if (!prices) {
       return Promise.all(
         TICKERS.map((ticker) => {
-          return fetch(
-            `https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_price?ticker=${ticker}`
-          )
+          return fetch(`${API_URLS.getOpenOrders[ENV]}?ticker=${ticker}`)
             .then((res) => res.json())
             .then(
               (result) => {
@@ -50,7 +49,7 @@ export const OpenOrders = () => {
       return Promise.all(
         TICKERS.map((ticker) => {
           return fetch(
-            `https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_open_orders?ticker=${ticker}`
+            `${API_URLS.getPrice}?ticker=${ticker}`
           )
             .then((res) => res.json())
             .then(

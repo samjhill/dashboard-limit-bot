@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Text } from "rebass";
+import { API_URLS, ENV } from "../App";
 
 export const Configuration = () => {
   const [config, setConfig] = useState();
@@ -7,7 +8,7 @@ export const Configuration = () => {
   useEffect(() => {
     if (!config) {
       fetch(
-        "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/configuration"
+        API_URLS.getConfiguration[ENV]
       )
         .then((res) => res.json())
         .then(
