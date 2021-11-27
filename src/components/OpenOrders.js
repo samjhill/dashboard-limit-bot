@@ -79,7 +79,7 @@ export const OpenOrders = () => {
   }, [prices, setPrices, orders, setOrders]);
 
   if (!orders) {
-    return null;
+    return <Text as="h1">Loading...</Text>;
   }
 
   return (

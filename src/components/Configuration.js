@@ -22,7 +22,7 @@ export const Configuration = () => {
   }, [config, setConfig]);
 
   if (!config) {
-    return null;
+    return <Text as="h1">Loading...</Text>;
   }
 
   return (

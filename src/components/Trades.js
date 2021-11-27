@@ -52,7 +52,7 @@ export const Trades = () => {
   }, [trades, setTrades]);
 
   if (!trades) {
-    return null;
+    return <Text as="h1">Loading...</Text>;
   }
 
   return (

@@ -40,7 +40,7 @@ export const Stats = () => {
   }, [stats, setStats]);
 
   if (!stats) {
-    return null;
+    return <Text as="h1">Loading...</Text>;
   }
 
   const statsSortedByDay = stats.sort(
