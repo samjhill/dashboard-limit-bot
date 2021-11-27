@@ -1,10 +1,8 @@
-import "./App.css";
+import './App.css';
 import { Configuration } from "./components/Configuration";
 import { Stats } from "./components/Stats";
 import { Trades } from "./components/Trades";
 import { OpenOrders } from "./components/OpenOrders";
-import { Log } from "./components/Log";
-
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,7 +11,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Box, Flex } from "rebass";
-import React from "react";
+import React from 'react';
 
 function App() {
   const linkPrefix =
@@ -31,7 +29,7 @@ function App() {
           color: isActive ? "#333" : "white",
           border: "1px solid white",
           padding: ".5rem",
-          textDecoration: "none",
+          textDecoration: "none"
         },
       }}
     >
@@ -59,16 +57,14 @@ function App() {
         path: `${linkPrefix}/configuration`,
         display: "Configuration",
       },
-      {
-        path: `${linkPrefix}/log`,
-        display: "Log",
-      },
     ];
 
     return (
       <Flex flexWrap="wrap" mt="3" ml="2" flexDirection={["row"]}>
         {links.map((link) => (
-          <LinkContainer isActive={location.pathname.includes(link.path)}>
+          <LinkContainer
+            isActive={location.pathname.includes(link.path)}
+          >
             <Link to={link.path}>{link.display}</Link>
           </LinkContainer>
         ))}
@@ -82,7 +78,11 @@ function App() {
         <div>
           <Links />
           <Routes>
-            <Route path={`${linkPrefix}/`} exact element={<OpenOrders />} />
+            <Route
+              path={`${linkPrefix}/`}
+              exact
+              element={<OpenOrders />}
+            />
             <Route path={`${linkPrefix}/orders`} element={<OpenOrders />} />
             <Route path={`${linkPrefix}/stats`} element={<Stats />} />
             <Route path={`${linkPrefix}/trades`} element={<Trades />} />
@@ -90,7 +90,6 @@ function App() {
               path={`${linkPrefix}/configuration`}
               element={<Configuration />}
             />
-            <Route path={`${linkPrefix}/log`} element={<Log />} />
           </Routes>
         </div>
       </Router>
