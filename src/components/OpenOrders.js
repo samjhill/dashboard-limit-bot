@@ -91,12 +91,12 @@ export const OpenOrders = () => {
         Hi, I'm an asset-buying robot.
       </Text>
       <Text textAlign="left" ml="2" mb="4">
-        Here's the strategy I'm trying right now: if the asset's{" "}
+        If the asset's{" "}
         <span style={{ color: "green", fontWeight: "bold" }}>
           price (green line)
         </span>{" "}
-        drops down to any of the <strong>white dots (open buy orders)</strong>,
-        I buy it. Then, I create new orders based on the new price.
+        drops down to any of the <strong>white dots (open limit-buy orders)</strong>,
+        the buy order gets automatically triggered. Then, I create new orders based on the new price.
       </Text>
 
       <Flex width={1} flexDirection={["column", "row"]}>
