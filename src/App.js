@@ -1,4 +1,4 @@
-import './App.css';
+import "./App.css";
 import { Configuration } from "./components/Configuration";
 import { Stats } from "./components/Stats";
 import { Trades } from "./components/Trades";
@@ -11,25 +11,30 @@ import {
   useLocation,
 } from "react-router-dom";
 import { Box, Flex } from "rebass";
-import React from 'react';
+import React, { useState } from "react";
 
-export const ENV = "dev";
+export const ENV = localStorage.getItem("env") || "dev";
 
 export const API_URLS = {
   getPrice: {
     dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_price",
+    prod: "https://jt5ivn6f34.execute-api.us-east-1.amazonaws.com/prod/get_price",
   },
   getOpenOrders: {
     dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_open_orders",
+    prod: "https://jt5ivn6f34.execute-api.us-east-1.amazonaws.com/prod/get_open_orders",
   },
   getTradesList: {
     dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/get_trades_list",
+    prod: "https://jt5ivn6f34.execute-api.us-east-1.amazonaws.com/prod/get_trades_list",
   },
   getConfiguration: {
     dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/configuration",
+    prod: "https://jt5ivn6f34.execute-api.us-east-1.amazonaws.com/prod/configuration",
   },
   getStats: {
     dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/stats",
+    prod: "https://jt5ivn6f34.execute-api.us-east-1.amazonaws.com/prod/stats",
   },
 };
 
@@ -49,13 +54,36 @@ function App() {
           color: isActive ? "#333" : "white",
           border: "1px solid white",
           padding: ".5rem",
-          textDecoration: "none"
+          textDecoration: "none",
         },
       }}
     >
       {children}
     </Box>
   );
+
+  const EnvSelector = () => {
+    const [env, setEnv] = useState(localStorage.getItem("env") || "dev");
+
+    return (
+      <select
+        value={env}
+        onChange={(e) => {
+          setEnv(e.target.value);
+          localStorage.setItem("env", e.target.value);
+          window.location.reload();
+        }}
+        style={{
+          marginBottom: "1rem",
+          marginTop: ".5rem",
+          padding: ".5rem"
+        }}
+      >
+        <option value="dev">dev</option>
+        <option value="prod">prod</option>
+      </select>
+    );
+  };
 
   const Links = () => {
     const location = useLocation();
@@ -82,9 +110,7 @@ function App() {
     return (
       <Flex flexWrap="wrap" mt="3" ml="2" flexDirection={["row"]}>
         {links.map((link) => (
-          <LinkContainer
-            isActive={location.pathname.includes(link.path)}
-          >
+          <LinkContainer isActive={location.pathname.includes(link.path)}>
             <Link to={link.path}>{link.display}</Link>
           </LinkContainer>
         ))}
@@ -96,13 +122,10 @@ function App() {
     <div className="App">
       <Router>
         <div>
+          <EnvSelector />
           <Links />
           <Routes>
-            <Route
-              path={`${linkPrefix}/`}
-              exact
-              element={<OpenOrders />}
-            />
+            <Route path={`${linkPrefix}/`} exact element={<OpenOrders />} />
             <Route path={`${linkPrefix}/orders`} element={<OpenOrders />} />
             <Route path={`${linkPrefix}/stats`} element={<Stats />} />
             <Route path={`${linkPrefix}/trades`} element={<Trades />} />
