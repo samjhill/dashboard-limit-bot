@@ -24,7 +24,7 @@ export const OpenOrders = () => {
     if (!prices) {
       return Promise.all(
         TICKERS.map((ticker) => {
-          return fetch(`${API_URLS.getOpenOrders[ENV]}?ticker=${ticker}`)
+          return fetch(`${API_URLS.getPrice[ENV]}?ticker=${ticker}`)
             .then((res) => res.json())
             .then(
               (result) => {
@@ -49,7 +49,7 @@ export const OpenOrders = () => {
       return Promise.all(
         TICKERS.map((ticker) => {
           return fetch(
-            `${API_URLS.getPrice}?ticker=${ticker}`
+            `${API_URLS.getOpenOrders[ENV]}?ticker=${ticker}`
           )
             .then((res) => res.json())
             .then(
