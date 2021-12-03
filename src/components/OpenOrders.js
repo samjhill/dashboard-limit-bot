@@ -13,6 +13,7 @@ import {
   ReferenceLine,
 } from "recharts";
 import { API_URLS, ENV } from "../App";
+import { getPrices } from "../helpers/prices";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -21,29 +22,13 @@ export const OpenOrders = () => {
   const [prices, setPrices] = useState();
 
   useEffect(() => {
+    async function fetchPrices() {
+      const prices = await getPrices();
+      setPrices(prices); 
+    }
+
     if (!prices) {
-      return Promise.all(
-        TICKERS.map((ticker) => {
-          return fetch(`${API_URLS.getPrice[ENV]}?ticker=${ticker}`)
-            .then((res) => res.json())
-            .then(
-              (result) => {
-                return { ticker: ticker, result };
-              },
-              (error) => {
-                console.error(error);
-              }
-            );
-        })
-      ).then((result) => {
-        const prices = Object.values(result);
-        let pricesObj = {};
-        // eslint-disable-next-line array-callback-return
-        prices?.map((ticker) => {
-          pricesObj[ticker.ticker] = ticker.result;
-        });
-        setPrices(pricesObj);
-      });
+      fetchPrices();
     }
     if (!orders) {
       return Promise.all(

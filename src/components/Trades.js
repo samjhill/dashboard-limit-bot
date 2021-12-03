@@ -10,15 +10,27 @@ import {
   ResponsiveContainer,
   ScatterChart,
   Scatter,
+  ReferenceLine
 } from "recharts";
 import { API_URLS, ENV } from "../App";
+import { getPrices } from "../helpers/prices";
 
 const TICKERS = ["btcusd", "ethusd"];
 
 export const Trades = () => {
   const [trades, setTrades] = useState();
+  const [prices, setPrices] = useState();
 
   useEffect(() => {
+    async function fetchPrices() {
+      const prices = await getPrices();
+      setPrices(prices);
+    }
+
+    if (!prices) {
+      fetchPrices();
+    }
+
     if (!trades) {
       return Promise.all(
         TICKERS.map((ticker) => {
@@ -50,7 +62,7 @@ export const Trades = () => {
         setTrades(tradesObj);
       });
     }
-  }, [trades, setTrades]);
+  }, [trades, setTrades, prices, setPrices]);
 
   if (!trades) {
     return <Text as="h1">Loading...</Text>;
@@ -88,7 +100,16 @@ export const Trades = () => {
                       <YAxis stroke="#ebebeb" />
                       <Tooltip />
                       <Legend />
-
+                      <ReferenceLine
+                        y={prices[ticker]}
+                        stroke="green"
+                        alwaysShow={true}
+                        label={{
+                          value: `current price - $${prices[ticker]}`,
+                          fill: "white",
+                        }}
+                        color="white"
+                      />
                       <Scatter dataKey="price" fill="white" />
                     </ScatterChart>
                   </ResponsiveContainer>
