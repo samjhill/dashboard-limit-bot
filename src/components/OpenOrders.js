@@ -115,7 +115,7 @@ export const OpenOrders = () => {
                       <YAxis stroke="#ebebeb" />
                       <Tooltip />
                       <Legend />
-                      {prices[ticker] && (
+                      {prices && prices[ticker] && (
                         <ReferenceLine
                           y={prices[ticker]}
                           stroke={COLORS[ticker]}
