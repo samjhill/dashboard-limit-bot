@@ -19,6 +19,9 @@ export const getPrices = (tickers = ["btcusd", "ethusd"]) => {
     let pricesObj = {};
     // eslint-disable-next-line array-callback-return
     prices?.map((ticker) => {
+      if (!prices[ticker.ticker]){
+        prices[ticker.ticker] = 0;
+      }
       pricesObj[ticker.ticker] = ticker.result;
     });
     return pricesObj;
