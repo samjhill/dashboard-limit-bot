@@ -1,8 +1,4 @@
 import "./App.css";
-import { Configuration } from "./components/Configuration";
-import { Stats } from "./components/Stats";
-import { Trades } from "./components/Trades";
-import { OpenOrders } from "./components/OpenOrders";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,6 +8,7 @@ import {
 } from "react-router-dom";
 import { Box, Flex } from "rebass";
 import React, { useState } from "react";
+import { ROUTES } from "./helpers/routes";
 
 export const ENV = localStorage.getItem("env") || "dev";
 
@@ -39,9 +36,6 @@ export const API_URLS = {
 };
 
 function App() {
-  const linkPrefix =
-    process.env.NODE_ENV === "development" ? "" : "/dashboard-limit-bot";
-
   const LinkContainer = ({ isActive = false, children }) => (
     <Box
       mb="4"
@@ -88,30 +82,11 @@ function App() {
   const Links = () => {
     const location = useLocation();
 
-    const links = [
-      {
-        path: `${linkPrefix}/orders`,
-        display: "Open Orders",
-      },
-      {
-        path: `${linkPrefix}/stats`,
-        display: "Stats",
-      },
-      {
-        path: `${linkPrefix}/trades`,
-        display: "Buy History",
-      },
-      {
-        path: `${linkPrefix}/configuration`,
-        display: "Configuration",
-      },
-    ];
-
     return (
       <Flex flexWrap="wrap" mt="3" ml="2" flexDirection={["row"]}>
-        {links.map((link) => (
-          <LinkContainer isActive={location.pathname.includes(link.path)}>
-            <Link to={link.path}>{link.display}</Link>
+        {ROUTES.map((route) => (
+          <LinkContainer isActive={location.pathname.includes(route.path)}>
+            <Link to={route.path}>{route.display}</Link>
           </LinkContainer>
         ))}
       </Flex>
@@ -125,14 +100,9 @@ function App() {
           <EnvSelector />
           <Links />
           <Routes>
-            <Route path={`${linkPrefix}/`} exact element={<OpenOrders />} />
-            <Route path={`${linkPrefix}/orders`} element={<OpenOrders />} />
-            <Route path={`${linkPrefix}/stats`} element={<Stats />} />
-            <Route path={`${linkPrefix}/trades`} element={<Trades />} />
-            <Route
-              path={`${linkPrefix}/configuration`}
-              element={<Configuration />}
-            />
+            {ROUTES.map((route) => (
+              <Route path={route.path} exact={route.exact} element={route.element} />
+            ))}
           </Routes>
         </div>
       </Router>
