@@ -15,12 +15,7 @@ import {
 } from "recharts";
 import { groupBy } from "underscore";
 import { API_URLS, ENV } from "../App";
-
-const COLORS = {
-  btc: "orange",
-  eth: "#407aff",
-  comparison: "grey",
-};
+import { COLORS } from "../helpers/colors";
 
 export const Stats = () => {
   const [stats, setStats] = useState();

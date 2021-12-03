@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { API_URLS, ENV } from "../App";
 import { getPrices } from "../helpers/prices";
+import { COLORS } from "../helpers/colors";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -80,8 +81,10 @@ export const OpenOrders = () => {
         <span style={{ color: "green", fontWeight: "bold" }}>
           price (green line)
         </span>{" "}
-        drops down to any of the <strong>white dots (open limit-buy orders)</strong>,
-        the buy order gets automatically triggered. Then, I create new orders based on the new price.
+        drops down to any of the{" "}
+        <strong>white dots (open limit-buy orders)</strong>, the buy order gets
+        automatically triggered. Then, I create new orders based on the new
+        price.
       </Text>
 
       <Flex width={1} flexDirection={["column", "row"]}>
@@ -94,7 +97,7 @@ export const OpenOrders = () => {
             <Box width={[1, 1 / 2]}>
               {orders[ticker] && (
                 <Box mt="2" mb="2" width={1}>
-                  <Text as="h3" mb="2">
+                  <Text as="h3" mb="2" color={COLORS[ticker]}>
                     {ticker}
                   </Text>
                   <ResponsiveContainer width="100%" height={400}>
@@ -112,16 +115,18 @@ export const OpenOrders = () => {
                       <YAxis stroke="#ebebeb" />
                       <Tooltip />
                       <Legend />
-                      <ReferenceLine
-                        y={prices[ticker]}
-                        stroke="green"
-                        alwaysShow={true}
-                        label={{
-                          value: `current price - $${prices[ticker]}`,
-                          fill: "white",
-                        }}
-                        color="white"
-                      />
+                      {prices[ticker] && (
+                        <ReferenceLine
+                          y={prices[ticker]}
+                          stroke={COLORS[ticker]}
+                          alwaysShow={true}
+                          label={{
+                            value: `current price - $${prices[ticker]}`,
+                            fill: "white",
+                          }}
+                          color="white"
+                        />
+                      )}
                       <Scatter dataKey="price" fill="white" />
                     </ScatterChart>
                   </ResponsiveContainer>

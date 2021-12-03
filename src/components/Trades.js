@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { API_URLS, ENV } from "../App";
 import { getPrices } from "../helpers/prices";
+import { COLORS } from "../helpers/colors";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -84,7 +85,9 @@ export const Trades = () => {
             <Box width={[1, 1 / 2]}>
               {trades[ticker] && (
                 <Box mt="2" mb="2">
-                  <Text as="h3">Buy history: {ticker}</Text>
+                  <Text as="h3" color={COLORS[ticker]}>
+                    {ticker}
+                  </Text>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart
                       data={trades[ticker]}
@@ -100,16 +103,18 @@ export const Trades = () => {
                       <YAxis stroke="#ebebeb" />
                       <Tooltip />
                       <Legend />
-                      <ReferenceLine
-                        y={prices[ticker]}
-                        stroke="green"
-                        alwaysShow={true}
-                        label={{
-                          value: `current price - $${prices[ticker]}`,
-                          fill: "white",
-                        }}
-                        color="white"
-                      />
+                      {prices && prices[ticker] && (
+                        <ReferenceLine
+                          y={prices[ticker]}
+                          stroke={COLORS[ticker]}
+                          alwaysShow={true}
+                          label={{
+                            value: `current price - $${prices[ticker]}`,
+                            fill: "white",
+                          }}
+                          color="white"
+                        />
+                      )}
                       <Scatter dataKey="price" fill="white" />
                     </ScatterChart>
                   </ResponsiveContainer>
