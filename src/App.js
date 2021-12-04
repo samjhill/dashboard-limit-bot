@@ -6,8 +6,8 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { Box, Flex } from "rebass";
-import React, { useState } from "react";
+import { Box, Flex, Text } from "rebass";
+import React, { useState, useEffect } from "react";
 import { ROUTES } from "./helpers/routes";
 
 export const ENV = localStorage.getItem("env") || "dev";
@@ -36,6 +36,26 @@ export const API_URLS = {
 };
 
 function App() {
+  const [dashboardMode, setDashboardMode] = useState(
+    localStorage.getItem("dashboardModeIsEnabled") === "true"
+  );
+  const [dashboardInterval, setDashboardInterval] = useState(15000);
+
+  useEffect(() => {
+    let dashboardTimer;
+    if (dashboardMode) {
+      dashboardTimer = setInterval(() => {
+        const currentRouteIndex = ROUTES.findIndex((route) =>
+          window.location.pathname.includes(route.path)
+        );
+        const nextRoute = ROUTES[(currentRouteIndex + 1) % ROUTES.length];
+        window.location.href = nextRoute.path;
+      }, dashboardInterval);
+    } else {
+      clearInterval(dashboardTimer);
+    }
+  }, [dashboardMode, setDashboardMode, dashboardInterval]);
+
   const LinkContainer = ({ isActive = false, children }) => (
     <Box
       mb="4"
@@ -70,7 +90,7 @@ function App() {
         style={{
           marginBottom: "1rem",
           marginTop: ".5rem",
-          padding: ".5rem"
+          padding: ".5rem",
         }}
       >
         <option value="dev">dev</option>
@@ -97,11 +117,36 @@ function App() {
     <div className="App">
       <Router>
         <div>
-          <EnvSelector />
+          <Flex p="2">
+            <EnvSelector />
+            <Box ml="3">
+              <label>
+                <input
+                  checked={dashboardMode}
+                  type="checkbox"
+                  onChange={() => {
+                    localStorage.setItem(
+                      "dashboardModeIsEnabled",
+                      !dashboardMode
+                    );
+                    setDashboardMode(!dashboardMode);
+                  }}
+                />
+                Dashboard Mode
+              </label>
+              <Text>
+                Flips through the pages every {dashboardInterval / 1000} seconds
+              </Text>
+            </Box>
+          </Flex>
           <Links />
           <Routes>
             {ROUTES.map((route) => (
-              <Route path={route.path} exact={route.exact} element={route.element} />
+              <Route
+                path={route.path}
+                exact={route.exact}
+                element={route.element}
+              />
             ))}
           </Routes>
         </div>
