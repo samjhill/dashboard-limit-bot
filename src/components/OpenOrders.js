@@ -15,6 +15,7 @@ import {
 import { API_URLS, ENV } from "../App";
 import { getPrices } from "../helpers/prices";
 import { COLORS } from "../helpers/colors";
+import { Table } from "../components/Table";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -25,7 +26,7 @@ export const OpenOrders = () => {
   useEffect(() => {
     async function fetchPrices() {
       const prices = await getPrices();
-      setPrices(prices); 
+      setPrices(prices);
     }
 
     if (!prices) {
@@ -34,9 +35,7 @@ export const OpenOrders = () => {
     if (!orders) {
       return Promise.all(
         TICKERS.map((ticker) => {
-          return fetch(
-            `${API_URLS.getOpenOrders[ENV]}?ticker=${ticker}`
-          )
+          return fetch(`${API_URLS.getOpenOrders[ENV]}?ticker=${ticker}`)
             .then((res) => res.json())
             .then(
               (result) => {
@@ -135,25 +134,16 @@ export const OpenOrders = () => {
             </Box>
 
             <Box key={ticker} ml="2" width={[1, 1 / 2]}>
-              <table ml="4">
-                <thead>
-                  <tr>
-                    <th>Placed on</th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders[ticker] &&
-                    Object.values(orders[ticker]).map((trade) => (
-                      <tr key={trade.tid}>
-                        <td>{trade.datetime}</td>
-                        <td>${trade.price}</td>
-                        <td>{trade.remaining_amount}</td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+              {orders[ticker] && (
+                <Table
+                  headers={["Placed on", "Price", "Amount"]}
+                  rows={Object.values(orders[ticker]).map((trade) => [
+                    trade.datetime,
+                    `${trade.price}`,
+                    trade.remaining_amount,
+                  ])}
+                />
+              )}
             </Box>
           </Flex>
         ))}

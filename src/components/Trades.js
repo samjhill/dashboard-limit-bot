@@ -15,6 +15,7 @@ import {
 import { API_URLS, ENV } from "../App";
 import { getPrices } from "../helpers/prices";
 import { COLORS } from "../helpers/colors";
+import { Table } from "../components/Table";
 
 const TICKERS = ["btcusd", "ethusd"];
 
@@ -123,27 +124,14 @@ export const Trades = () => {
             </Box>
 
             <Box key={ticker} ml="2" width={[1, 1 / 2]}>
-              <table ml="4">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {trades[ticker] &&
-                    Object.values(trades[ticker])
-                      .reverse()
-                      .map((trade) => (
-                        <tr key={trade.tid}>
-                          <td>{trade.datetime}</td>
-                          <td>${trade.price}</td>
-                          <td>{trade.amount}</td>
-                        </tr>
-                      ))}
-                </tbody>
-              </table>
+              {trades[ticker] && (
+                <Table
+                  headers={["Date", "Price", "Amount"]}
+                  rows={Object.values(trades[ticker])
+                    .reverse()
+                    .map((trade) => ([trade.datetime, `$${trade.price}`, trade.amount]))}
+                />
+              )}
             </Box>
           </Flex>
         ))}
