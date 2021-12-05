@@ -50,10 +50,10 @@ export const Stats = () => {
   const lastUpdated = moment(
     statsSortedByDay[statsSortedByDay.length - 1].datetime
   );
-  const nextUpdate = lastUpdated.add(24, "hours");
+  const nextUpdate = moment(lastUpdated).add(24, "hours");
 
   const hoursUntilUpdate = moment.duration(nextUpdate.diff(moment())).asHours();
-
+  
   const groupedStats = groupBy(stats, (stat) => {
     return moment(stat.datetime).startOf("day").format();
   });
