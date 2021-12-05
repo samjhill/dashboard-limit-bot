@@ -9,15 +9,17 @@ export const Table = ({ headers, rows }) => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index)=> (
-            <tr key={index} style={{
-                borderBottom: "1px solid grey"
-            }}>
-                {row.map(cell => (
-                    <td style={{
-                        padding: ".25rem"
-                    }}>{cell}</td>
-                ))}
+          {rows.map((row, index) => (
+            <tr key={index}>
+              {row.map((cell) => (
+                <td
+                  style={{
+                    padding: ".25rem",
+                  }}
+                >
+                  {cell}
+                </td>
+              ))}
             </tr>
           ))}
         </tbody>

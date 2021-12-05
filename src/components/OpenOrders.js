@@ -72,9 +72,6 @@ export const OpenOrders = () => {
         Open Orders
       </Text>
 
-      <Text textAlign="left" ml="2" mb="2">
-        Hi, I'm an asset-buying robot.
-      </Text>
       <Text textAlign="left" ml="2" mb="4">
         If the asset's{" "}
         <span style={{ color: "green", fontWeight: "bold" }}>
