@@ -13,6 +13,10 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import {
+  Link,
+  useLocation
+} from "react-router-dom";
 import { groupBy } from "underscore";
 import { API_URLS, ENV } from "../App";
 import { getTradingPairs } from "../helpers/tradingPairs";
@@ -20,8 +24,11 @@ import { getStatsForTicker } from "../helpers/stats";
 import { COLORS } from "../helpers/colors";
 
 export const Stats = () => {
+  const location = useLocation();
+  const selectedTicker = location.pathname.split("/")[2];
   const [stats, setStats] = useState();
   const [tradingPairs, setTradingPairs] = useState();
+  
 
   useEffect(() => {
     async function fetchTradingPairs() {
@@ -95,14 +102,7 @@ export const Stats = () => {
   const statsForPairs = tradingPairs
     .map(({ name, ticker }) => {
       return getStatsForTicker({ groupedStats, ticker });
-    })
-    // .reduce(
-    //   (prev, cur) => ({
-    //     ...prev,
-    //     [cur.ticker]: cur,
-    //   }),
-    //   {}
-    // );
+    });
 
   if (!statsForPairs) {
     return <Text as="h1">Loading...</Text>;
@@ -116,6 +116,24 @@ export const Stats = () => {
 
   return (
     <>
+      <Flex>
+        {tradingPairs.map(({ name, ticker }) => (
+          <Link to={`/stats/${ticker}`} style={{ textDecoration: "none" }} key={ticker}>
+            <Box
+              p={2}
+              m={1}
+              sx={{
+                color: selectedTicker === ticker ? "white" : COLORS[ticker],
+                border: `1px solid ${COLORS[ticker]}`,
+                background: selectedTicker === ticker && COLORS[ticker],
+                fontWeight: "bold",
+              }}
+            >
+              {name}
+            </Box>
+          </Link>
+        ))}
+      </Flex>
       <Text mt="2">Stats update in {Math.round(hoursUntilUpdate)} hours</Text>
       <Flex
         flexDirection={["column", "row"]}
@@ -126,171 +144,143 @@ export const Stats = () => {
       >
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Dollars spent</Text>
-          {tradingPairs.map(({ name, ticker }) => (
-            <Box key={ticker}>
-              {findStatsForPair(ticker) && (
-                <Text key={ticker}>
-                  {name}: ${findStatsForPair(ticker).totalSpend}
-                </Text>
-              )}
-            </Box>
-          ))}
+          <Box>
+            {findStatsForPair(selectedTicker) && (
+              <Text key={selectedTicker}>
+                ${findStatsForPair(selectedTicker).totalSpend}
+              </Text>
+            )}
+          </Box>
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Coins purchased</Text>
-          {tradingPairs.map(({ name, ticker }) => (
-            <Box key={ticker}>
-              {findStatsForPair(ticker) && (
-                <Text key={ticker}>
-                  {name}: {findStatsForPair(ticker).totalCoinsPurchased}
-                </Text>
-              )}
-            </Box>
-          ))}
+          {findStatsForPair(selectedTicker) && (
+            <Text key={selectedTicker}>
+              {findStatsForPair(selectedTicker).totalCoinsPurchased}
+            </Text>
+          )}
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Price per coin: Dollar-Cost-Average strategy</Text>
-          {tradingPairs.map(({ name, ticker }) => (
-            <Box key={ticker}>
-              {findStatsForPair(ticker) && (
-                <Text key={ticker}>
-                  {name}: ${findStatsForPair(ticker).dcaComparisonPrice}
-                </Text>
-              )}
-            </Box>
-          ))}
+          {findStatsForPair(selectedTicker) && (
+            <Text key={selectedTicker}>
+              ${findStatsForPair(selectedTicker).dcaComparisonPrice}
+            </Text>
+          )}
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Price per coin: Limit Strategy</Text>
-          {tradingPairs.map(({ name, ticker }) => (
-            <Box key={ticker}>
-              {findStatsForPair(ticker) && (
-                <Text key={ticker}>
-                  {name}: ${findStatsForPair(ticker).limitStrategyPrice}
-                </Text>
-              )}
-            </Box>
-          ))}
+          {findStatsForPair(selectedTicker) && (
+            <Text key={selectedTicker}>
+              ${findStatsForPair(selectedTicker).limitStrategyPrice}
+            </Text>
+          )}
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Advantage compared to DCA</Text>
           <Text>
-            Bitcoin: {savingsPercentages[savingsPercentages.length - 1].btcusd}%
-          </Text>
-          <Text>
-            Ethereum: {savingsPercentages[savingsPercentages.length - 1].ethusd}
-            %
+            {savingsPercentages[savingsPercentages.length - 1][selectedTicker]}%
           </Text>
         </Box>
       </Flex>
       <Flex flexDirection={["column", "row"]} flexWrap="wrap">
-        {tradingPairs.map(({ name, ticker }) => (
-          <Box width={[1, 1 / 3]} mt="2" mb="2" key={ticker}>
-            <Text as="h3">{name}: price per coin comparison</Text>
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart
-                data={[
-                  {
-                    dca: findStatsForPair(ticker)?.dcaComparisonPrice,
-                    limit: findStatsForPair(ticker)?.limitStrategyPrice,
-                  },
-                ]}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid stroke="#333" />
-                <XAxis dataKey="name" stroke="#ebebeb" />
-                <YAxis stroke="#ebebeb" />
-                <Tooltip />
-                <Legend />
+        <Box width={[1, 1 / 3]} mt="2" mb="2">
+          <Text as="h3">price per coin comparison</Text>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart
+              data={[
+                {
+                  dca: findStatsForPair(selectedTicker)?.dcaComparisonPrice,
+                  limit: findStatsForPair(selectedTicker)?.limitStrategyPrice,
+                },
+              ]}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid stroke="#333" />
+              <XAxis dataKey="name" stroke="#ebebeb" />
+              <YAxis stroke="#ebebeb" />
+              <Tooltip />
+              <Legend />
 
-                <Bar
-                  dataKey="dca"
-                  name="dca strategy"
-                  fill={COLORS.comparison}
-                />
-                <Bar dataKey="limit" name="limit strategy" fill={COLORS.btc} />
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
-        ))}
+              <Bar dataKey="dca" name="dca strategy" fill={COLORS.comparison} />
+              <Bar
+                dataKey="limit"
+                name="limit strategy"
+                fill={COLORS[selectedTicker]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
 
-        {tradingPairs.map(({ name, ticker }) => (
-          <Box width={[1, 1 / 3]} mt="2" mb="2" key={ticker}>
-            <Text as="h3">{name}: coin amounts compared to DCA</Text>
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart
-                data={findStatsForPair(ticker)?.coinAmounts}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid stroke="#333" />
-                <XAxis dataKey="name" stroke="#ebebeb" />
-                <YAxis stroke="#ebebeb" />
-                <Tooltip />
-                <Legend />
+        <Box width={[1, 1 / 3]} mt="2" mb="2">
+          <Text as="h3">coin amounts compared to DCA</Text>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart
+              data={findStatsForPair(selectedTicker)?.coinAmounts}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid stroke="#333" />
+              <XAxis dataKey="name" stroke="#ebebeb" />
+              <YAxis stroke="#ebebeb" />
+              <Tooltip />
+              <Legend />
 
-                <Bar
-                  dataKey={`${ticker}Comparison`}
-                  name="comparison"
-                  fill={COLORS.comparison}
-                />
-                <Bar
-                  dataKey={`${ticker}Actual`}
-                  name="actual"
-                  fill={COLORS[ticker]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
-        ))}
+              <Bar
+                dataKey={`${selectedTicker}Comparison`}
+                name="comparison"
+                fill={COLORS.comparison}
+              />
+              <Bar
+                dataKey={`${selectedTicker}Actual`}
+                name="actual"
+                fill={COLORS[selectedTicker]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
 
-        {tradingPairs.map(({ name, ticker }) => (
-          <Box width={[1, 1 / 3]} mt="2" mb="2" key={ticker}>
-            <Text as="h3">{name}: coin value, in dollars</Text>
-            <ResponsiveContainer width="100%" height={400}>
-              <BarChart
-                data={[
-                  {
-                    dca: findStatsForPair(ticker)?.dcaComparisonCoinValue,
-                    limit: findStatsForPair(ticker)?.actualCoinValue,
-                  },
-                ]}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid stroke="#333" />
-                <XAxis dataKey="name" stroke="#ebebeb" />
-                <YAxis stroke="#ebebeb" />
-                <Tooltip />
-                <Legend />
+        <Box width={[1, 1 / 3]} mt="2" mb="2">
+          <Text as="h3">coin value, in dollars</Text>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart
+              data={[
+                {
+                  dca: findStatsForPair(selectedTicker)?.dcaComparisonCoinValue,
+                  limit: findStatsForPair(selectedTicker)?.actualCoinValue,
+                },
+              ]}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid stroke="#333" />
+              <XAxis dataKey="name" stroke="#ebebeb" />
+              <YAxis stroke="#ebebeb" />
+              <Tooltip />
+              <Legend />
 
-                <Bar
-                  dataKey="dca"
-                  name="dca strategy"
-                  fill={COLORS.comparison}
-                />
-                <Bar
-                  dataKey="limit"
-                  name="limit strategy"
-                  fill={COLORS[ticker]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </Box>
-        ))}
+              <Bar dataKey="dca" name="dca strategy" fill={COLORS.comparison} />
+              <Bar
+                dataKey="limit"
+                name="limit strategy"
+                fill={COLORS[selectedTicker]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </Box>
 
         <Box width={[1, 1 / 3]} mt="2" mb="2">
           <Text as="h3">Limit strategy advantage over time</Text>

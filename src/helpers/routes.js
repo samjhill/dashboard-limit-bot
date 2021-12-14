@@ -20,7 +20,7 @@ export const ROUTES = [
     element: <OpenOrders />,
   },
   {
-    path: `${linkPrefix}/stats`,
+    path: `${linkPrefix}/stats/*`,
     display: "Stats",
     element: <Stats />,
   },
