@@ -25,7 +25,8 @@ import { COLORS } from "../helpers/colors";
 
 export const Stats = () => {
   const location = useLocation();
-  const selectedTicker = location.pathname.split("/")[2];
+  const ticker = location.pathname.split("/")[2];
+  const selectedTicker = ticker === "*" ? "btcusd" : ticker;
   const [stats, setStats] = useState();
   const [tradingPairs, setTradingPairs] = useState();
   
