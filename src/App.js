@@ -113,7 +113,7 @@ function App() {
             isActive={
               route.exact
                 ? location.pathname === route.path
-                : location.pathname.includes(route.path)
+                : location.pathname.includes(route.path.split("/")[1])
             }
             key={route.path}
           >
