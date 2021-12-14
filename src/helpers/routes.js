@@ -4,7 +4,7 @@ import { Trades } from "../components/Trades";
 import { OpenOrders } from "../components/OpenOrders";
 import { About } from "../components/About";
 
-const linkPrefix =
+export const linkPrefix =
   process.env.NODE_ENV === "development" ? "" : "/dashboard-limit-bot";
 
 export const ROUTES = [

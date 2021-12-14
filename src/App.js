@@ -110,11 +110,7 @@ function App() {
       <Flex flexWrap="wrap" mt="3" ml="2" flexDirection={["row"]}>
         {ROUTES.map((route) => (
           <LinkContainer
-            isActive={
-              route.exact
-                ? location.pathname === route.path
-                : location.pathname.includes(route.path.split("/")[1])
-            }
+            isActive={location.pathname === route.path}
             key={route.path}
           >
             <Link to={route.path}>{route.display}</Link>

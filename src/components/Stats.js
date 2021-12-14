@@ -22,10 +22,14 @@ import { API_URLS, ENV } from "../App";
 import { getTradingPairs } from "../helpers/tradingPairs";
 import { getStatsForTicker } from "../helpers/stats";
 import { COLORS } from "../helpers/colors";
+import { linkPrefix } from "../helpers/routes";
 
 export const Stats = () => {
   const location = useLocation();
-  const ticker = location.pathname.split("/")[2];
+  const ticker =
+    process.env.NODE_ENV === "development"
+      ? location.pathname.split("/")[2]
+      : location.pathname.split("/")[3];
   const selectedTicker = ticker === "*" ? "btcusd" : ticker;
   const [stats, setStats] = useState();
   const [tradingPairs, setTradingPairs] = useState();
@@ -119,7 +123,7 @@ export const Stats = () => {
     <>
       <Flex>
         {tradingPairs.map(({ name, ticker }) => (
-          <Link to={`/stats/${ticker}`} style={{ textDecoration: "none" }} key={ticker}>
+          <Link to={`${linkPrefix}/stats/${ticker}`} style={{ textDecoration: "none" }} key={ticker}>
             <Box
               p={2}
               m={1}
