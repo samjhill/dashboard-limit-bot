@@ -14,14 +14,15 @@ import {
 } from "recharts";
 import { API_URLS, ENV } from "../App";
 import { getPrices } from "../helpers/prices";
+import { getTradingPairs } from "../helpers/tradingPairs";
 import { COLORS } from "../helpers/colors";
 import { Table } from "../components/Table";
 
-const TICKERS = ["btcusd", "ethusd"];
 
 export const Trades = () => {
   const [trades, setTrades] = useState();
   const [prices, setPrices] = useState();
+  const [tradingPairs, setTradingPairs] = useState();
 
   useEffect(() => {
     async function fetchPrices() {
@@ -29,16 +30,22 @@ export const Trades = () => {
       setPrices(prices);
     }
 
+    async function fetchTradingPairs() {
+      const tradingPairs = await getTradingPairs();
+      setTradingPairs(tradingPairs);
+    }
+
     if (!prices) {
       fetchPrices();
     }
+    if (!tradingPairs) {
+      fetchTradingPairs();
+    }
 
-    if (!trades) {
+    if (!trades && tradingPairs) {
       return Promise.all(
-        TICKERS.map((ticker) => {
-          return fetch(
-            `${API_URLS.getTradesList[ENV]}?ticker=${ticker}`
-          )
+        tradingPairs.map(({ name, ticker }) => {
+          return fetch(`${API_URLS.getTradesList[ENV]}?ticker=${ticker}`)
             .then((res) => res.json())
             .then(
               (result) => {
@@ -57,14 +64,13 @@ export const Trades = () => {
         const trades = Object.values(result);
         let tradesObj = {};
         // eslint-disable-next-line array-callback-return
-        trades
-          .map((ticker) => {
-            tradesObj[ticker.ticker] = ticker.result.reverse();
-          });
+        trades.map((ticker) => {
+          tradesObj[ticker.ticker] = ticker.result.reverse();
+        });
         setTrades(tradesObj);
       });
     }
-  }, [trades, setTrades, prices, setPrices]);
+  }, [trades, setTrades, prices, setPrices, tradingPairs, setTradingPairs]);
 
   if (!trades) {
     return <Text as="h1">Loading...</Text>;
@@ -77,7 +83,7 @@ export const Trades = () => {
       </Text>
 
       <Flex width={1} flexDirection={["column", "row"]}>
-        {TICKERS.map((ticker) => (
+        {tradingPairs.map(({ name, ticker }) => (
           <Flex
             key={ticker}
             width={[1, 1 / 2]}
@@ -87,7 +93,7 @@ export const Trades = () => {
               {trades[ticker] && (
                 <Box mt="2" mb="2">
                   <Text as="h3" color={COLORS[ticker]}>
-                    {ticker}
+                    {name}
                   </Text>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart

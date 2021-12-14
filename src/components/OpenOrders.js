@@ -14,14 +14,15 @@ import {
 } from "recharts";
 import { API_URLS, ENV } from "../App";
 import { getPrices } from "../helpers/prices";
+import { getTradingPairs } from "../helpers/tradingPairs";
 import { COLORS } from "../helpers/colors";
 import { Table } from "../components/Table";
 
-const TICKERS = ["btcusd", "ethusd"];
 
 export const OpenOrders = () => {
   const [orders, setOrders] = useState();
   const [prices, setPrices] = useState();
+  const [tradingPairs, setTradingPairs] = useState();
 
   useEffect(() => {
     async function fetchPrices() {
@@ -29,13 +30,21 @@ export const OpenOrders = () => {
       setPrices(prices);
     }
 
+    async function fetchTradingPairs() {
+      const tradingPairs = await getTradingPairs();
+      setTradingPairs(tradingPairs);
+    }
+
     if (!prices) {
       fetchPrices();
     }
-    if (!orders) {
+    if (!tradingPairs) {
+      fetchTradingPairs();
+    }
+    if (!orders && tradingPairs) {
       return Promise.all(
-        TICKERS.map((ticker) => {
-          return fetch(`${API_URLS.getOpenOrders[ENV]}?ticker=${ticker}`)
+        tradingPairs.map((pair) => {
+          return fetch(`${API_URLS.getOpenOrders[ENV]}?ticker=${pair.ticker}`)
             .then((res) => res.json())
             .then(
               (result) => {
@@ -43,7 +52,7 @@ export const OpenOrders = () => {
                   ...trade,
                   datetime: moment(trade.timestampms).format("MM/DD h:mm a"),
                 }));
-                return { ticker: ticker, result: trades };
+                return { ticker: pair.ticker, result: trades };
               },
               (error) => {
                 console.error(error);
@@ -60,10 +69,14 @@ export const OpenOrders = () => {
         setOrders(tradesObj);
       });
     }
-  }, [prices, setPrices, orders, setOrders]);
+  }, [prices, setPrices, orders, setOrders, tradingPairs, setTradingPairs]);
 
   if (!orders) {
-    return <Text as="h1">Loading...</Text>;
+    return <Text as="h1">Loading orders...</Text>;
+  }
+
+  if (!tradingPairs) {
+    return <Text as="h1">Loading trading pairs...</Text>;
   }
 
   return (
@@ -84,21 +97,21 @@ export const OpenOrders = () => {
       </Text>
 
       <Flex width={1} flexDirection={["column", "row"]}>
-        {TICKERS.map((ticker) => (
+        {tradingPairs.map((pair) => (
           <Flex
-            key={ticker}
+            key={pair.ticker}
             width={[1, 1 / 2]}
             flexDirection={["column", "row"]}
           >
             <Box width={[1, 1 / 2]}>
-              {orders[ticker] && (
+              {orders[pair.ticker] && (
                 <Box mt="2" mb="2" width={1}>
-                  <Text as="h3" mb="2" color={COLORS[ticker]}>
-                    {ticker}
+                  <Text as="h3" mb="2" color={COLORS[pair.ticker]}>
+                    {pair.name}
                   </Text>
                   <ResponsiveContainer width="100%" height={400}>
                     <ScatterChart
-                      data={orders[ticker]}
+                      data={orders[pair.ticker]}
                       margin={{
                         top: 5,
                         right: 30,
@@ -111,13 +124,13 @@ export const OpenOrders = () => {
                       <YAxis stroke="#ebebeb" />
                       <Tooltip />
                       <Legend />
-                      {prices && prices[ticker] && (
+                      {prices && prices[pair.ticker] && (
                         <ReferenceLine
-                          y={prices[ticker]}
-                          stroke={COLORS[ticker]}
+                          y={prices[pair.ticker]}
+                          stroke={COLORS[pair.ticker]}
                           alwaysShow={true}
                           label={{
-                            value: `current price - $${prices[ticker]}`,
+                            value: `current price - $${prices[pair.ticker]}`,
                             fill: "white",
                           }}
                           color="white"
@@ -130,11 +143,11 @@ export const OpenOrders = () => {
               )}
             </Box>
 
-            <Box key={ticker} ml="2" width={[1, 1 / 2]}>
-              {orders[ticker] && (
+            <Box key={pair.ticker} ml="2" width={[1, 1 / 2]}>
+              {orders[pair.ticker] && (
                 <Table
                   headers={["Placed on", "Price", "Amount"]}
-                  rows={Object.values(orders[ticker]).map((trade) => [
+                  rows={Object.values(orders[pair.ticker]).map((trade) => [
                     trade.datetime,
                     `${trade.price}`,
                     trade.remaining_amount,

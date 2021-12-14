@@ -33,6 +33,10 @@ export const API_URLS = {
     dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/stats",
     prod: "https://jt5ivn6f34.execute-api.us-east-1.amazonaws.com/prod/stats",
   },
+  getTradingPairs: {
+    dev: "https://a3u69qjuqd.execute-api.us-east-1.amazonaws.com/dev/trading_pairs",
+    prod: "https://jt5ivn6f34.execute-api.us-east-1.amazonaws.com/prod/trading_pairs",
+  },
 };
 
 function App() {
@@ -105,7 +109,7 @@ function App() {
     return (
       <Flex flexWrap="wrap" mt="3" ml="2" flexDirection={["row"]}>
         {ROUTES.map((route) => (
-          <LinkContainer isActive={location.pathname === (route.path)}>
+          <LinkContainer isActive={location.pathname === (route.path)} key={route.path}>
             <Link to={route.path}>{route.display}</Link>
           </LinkContainer>
         ))}
@@ -146,6 +150,7 @@ function App() {
                 path={route.path}
                 exact={route.exact}
                 element={route.element}
+                key={route.path}
               />
             ))}
           </Routes>
