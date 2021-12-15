@@ -4,4 +4,6 @@ export const COLORS = {
   eth: "#407aff",
   ethusd: "#407aff",
   comparison: "grey",
+  ltcusd: "lime",
+  ltc: "lime"
 };
