@@ -66,39 +66,9 @@ export const Stats = () => {
     return <Text as="h1">No data yet.</Text>;
   }
 
-  const statsSortedByDay = stats.sort(
-    (a, b) => moment(a.datetime) - moment(b.datetime)
-  );
-
-  const lastUpdated = moment(
-    statsSortedByDay[statsSortedByDay.length - 1].datetime
-  );
-  const nextUpdate = moment(lastUpdated).add(24, "hours");
-
-  const hoursUntilUpdate = moment.duration(nextUpdate.diff(moment())).asHours();
-
   const groupedStats = groupBy(stats, (stat) => {
     return moment(stat.datetime).startOf("day").format();
   });
-
-  const savingsPercentages = Object.values(groupedStats)
-    .map((statsForDay) =>
-      statsForDay
-        .map((stat) => ({
-          name: moment(stat.datetime).format("MM/DD/YY"),
-          savings: stat.savings_percent,
-          ticker: stat.ticker,
-        }))
-        .reduce(
-          (prev, cur) => ({
-            ...prev,
-            name: cur.name,
-            [cur.ticker]: cur.savings,
-          }),
-          {}
-        )
-    )
-    .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
 
   if (!tradingPairs) {
     return <Text as="h1">Loading...</Text>;
@@ -123,7 +93,11 @@ export const Stats = () => {
     <>
       <Flex>
         {tradingPairs.map(({ name, ticker }) => (
-          <Link to={`${linkPrefix}/stats/${ticker}`} style={{ textDecoration: "none" }} key={ticker}>
+          <Link
+            to={`${linkPrefix}/stats/${ticker}`}
+            style={{ textDecoration: "none" }}
+            key={ticker}
+          >
             <Box
               p={2}
               m={1}
@@ -139,7 +113,9 @@ export const Stats = () => {
           </Link>
         ))}
       </Flex>
-      <Text mt="2">Stats update in {Math.round(hoursUntilUpdate)} hours</Text>
+      <Text mt="2">
+        Stats update in {Math.round(findStatsForPair(selectedTicker).hoursUntilUpdate)} hours
+      </Text>
       <Flex
         flexDirection={["column", "row"]}
         mb="4"
@@ -152,7 +128,20 @@ export const Stats = () => {
           <Box>
             {findStatsForPair(selectedTicker) && (
               <Text key={selectedTicker}>
-                ${findStatsForPair(selectedTicker).totalSpend}
+                ${findStatsForPair(selectedTicker).totalSpend.toLocaleString()}
+              </Text>
+            )}
+          </Box>
+        </Box>
+        <Box textAlign="left" p="2" minWidth="200px">
+          <Text as="h3">Current value (USD)</Text>
+          <Box>
+            {findStatsForPair(selectedTicker) && (
+              <Text key={selectedTicker}>
+                $
+                {findStatsForPair(
+                  selectedTicker
+                ).actualCoinValue.toLocaleString()}
               </Text>
             )}
           </Box>
@@ -169,7 +158,10 @@ export const Stats = () => {
           <Text as="h3">Price per coin: Dollar-Cost-Average strategy</Text>
           {findStatsForPair(selectedTicker) && (
             <Text key={selectedTicker}>
-              ${findStatsForPair(selectedTicker).dcaComparisonPrice}
+              $
+              {findStatsForPair(
+                selectedTicker
+              ).dcaComparisonPrice.toLocaleString()}
             </Text>
           )}
         </Box>
@@ -177,14 +169,22 @@ export const Stats = () => {
           <Text as="h3">Price per coin: Limit Strategy</Text>
           {findStatsForPair(selectedTicker) && (
             <Text key={selectedTicker}>
-              ${findStatsForPair(selectedTicker).limitStrategyPrice}
+              $
+              {findStatsForPair(
+                selectedTicker
+              ).limitStrategyPrice.toLocaleString()}
             </Text>
           )}
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Advantage compared to DCA</Text>
           <Text>
-            {savingsPercentages[savingsPercentages.length - 1][selectedTicker]}%
+            {
+              findStatsForPair(selectedTicker)?.savingsPercentages[
+                findStatsForPair(selectedTicker)?.savingsPercentages.length - 1
+              ][selectedTicker]
+            }
+            %
           </Text>
         </Box>
       </Flex>
@@ -292,22 +292,22 @@ export const Stats = () => {
           <Text>(percentage dollars saved per coin)</Text>
           <ResponsiveContainer width="100%" height={400}>
             <LineChart
-              data={savingsPercentages}
+              data={findStatsForPair(selectedTicker)?.savingsPercentages}
               margin={{ top: 5, right: 5, left: 10, bottom: 5 }}
             >
               <XAxis dataKey="name" stroke="#ebebeb" />
               <Tooltip />
               <Legend />
               <CartesianGrid stroke="#333" />
-              {tradingPairs.map(({ ticker }, index) => (
-                <Line
-                  type="monotone"
-                  dataKey={ticker}
-                  stroke={COLORS[ticker]}
-                  yAxisId={index}
-                  key={ticker}
-                />
-              ))}
+              {/* {tradingPairs.map(({ ticker }, index) => ( */}
+              <Line
+                type="monotone"
+                dataKey={ticker}
+                stroke={COLORS[ticker]}
+                // yAxisId={index}
+                key={ticker}
+              />
+              {/* ))} */}
             </LineChart>
           </ResponsiveContainer>
         </Box>

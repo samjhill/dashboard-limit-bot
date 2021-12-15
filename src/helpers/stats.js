@@ -1,126 +1,137 @@
 import moment from "moment";
 
+const transformStatsToChartFormat = (groupedStats, mapProps, reduceProps) => {
+  const chartFormatStats = groupedStats
+    .map((statsForDay) =>
+      statsForDay
+        .map((stat) => {
+          return {
+            name: moment(stat.datetime).format("MM/DD/YY"),
+            ticker: stat.ticker,
+            ...Object.entries(mapProps)
+              .map(([key, value]) => ({
+                [key]: stat[value],
+              }))
+              .reduce((prev, cur) => ({ ...prev, ...cur })),
+          };
+        })
+        .reduce(
+          (prev, cur) => ({
+            ...prev,
+            name: cur.name,
+            ...Object.entries(reduceProps)
+              .map(([key, value]) => ({
+                [key]: cur[value],
+              }))
+              .reduce((prev, cur) => ({ ...prev, ...cur })),
+          }),
+          {}
+        )
+    )
+    .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
+
+  return chartFormatStats;
+};
+
 export const getStatsForTicker = ({ groupedStats, ticker }) => {
   if (!ticker || !groupedStats) {
     return null;
   }
-  
-  const coinAmounts = Object.values(groupedStats)
-    .map((statsForDay) =>
-      statsForDay
-        .map((stat) => ({
-          name: moment(stat.datetime).format("MM/DD/YY"),
-          actualCoinAmount: stat.actual_coin_amount,
-          comparisonCoinAmount: stat.comparison_coin_amount,
-          ticker: stat.ticker,
-        }))
-        .reduce(
-          (prev, cur) => ({
-            ...prev,
-            name: cur.name,
-            [`${cur.ticker}Actual`]: cur.actualCoinAmount,
-            [`${cur.ticker}Comparison`]: cur.comparisonCoinAmount,
-          }),
-          {}
-        )
-    )
-    .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
 
-  const dollarsSpent = Object.values(groupedStats)
-    .map((statsForDay) =>
-      statsForDay
-        .map((stat) => ({
-          name: moment(stat.datetime).format("MM/DD/YY"),
-          totalSpend: stat.total_spend,
-          ticker: stat.ticker,
-        }))
-        .reduce(
-          (prev, cur) => ({
-            ...prev,
-            name: cur.name,
-            [`${cur.ticker}TotalSpend`]: cur.totalSpend,
-          }),
-          {}
-        )
-    )
-    .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
+  const statsGroupedByDayFilteredByTicker = Object.values(groupedStats)
+    .map((statsForDay) => statsForDay.filter((stat) => stat.ticker === ticker))
+    .filter((statsForDay) => statsForDay.length > 0);
 
-  const marketPrice = Object.values(groupedStats)
-    .map((statsForDay) =>
-      statsForDay
-        .map((stat) => ({
-          name: moment(stat.datetime).format("MM/DD/YY"),
-          currentPrice: stat.current_price,
-          ticker: stat.ticker,
-        }))
-        .reduce(
-          (prev, cur) => ({
-            ...prev,
-            name: cur.name,
-            [`${cur.ticker}CurrentPrice`]: cur.currentPrice,
-          }),
-          {}
-        )
-    )
-    .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
+  const coinAmounts = transformStatsToChartFormat(
+    statsGroupedByDayFilteredByTicker,
+    {
+      actualCoinAmount: "actual_coin_amount",
+      comparisonCoinAmount: "comparison_coin_amount",
+    },
+    {
+      [`${ticker}Actual`]: "actualCoinAmount",
+      [`${ticker}Comparison`]: "comparisonCoinAmount",
+    }
+  );
 
-  const coinsPurchased = Object.values(groupedStats)
-    .map((statsForDay) =>
-      statsForDay
-        .map((stat) => ({
-          name: moment(stat.datetime).format("MM/DD/YY"),
-          actualCoinAmount: stat.actual_coin_amount,
-          ticker: stat.ticker,
-        }))
-        .reduce(
-          (prev, cur) => ({
-            ...prev,
-            name: cur.name,
-            [`${cur.ticker}CoinAmount`]: cur.actualCoinAmount,
-          }),
-          {}
-        )
-    )
-    .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
+  const dollarsSpent = transformStatsToChartFormat(
+    statsGroupedByDayFilteredByTicker,
+    {
+      totalSpend: "total_spend",
+    },
+    {
+      [`${ticker}TotalSpend`]: "totalSpend",
+    }
+  );
 
-  const dcaComparisonAveragePrice = Object.values(groupedStats)
-    .map((statsForDay) =>
-      statsForDay
-        .map((stat) => ({
-          name: moment(stat.datetime).format("MM/DD/YY"),
-          averageDcaPrice: stat.average_dca_price,
-          ticker: stat.ticker,
-        }))
-        .reduce(
-          (prev, cur) => ({
-            ...prev,
-            name: cur.name,
-            [`${cur.ticker}AverageDcaPrice`]: cur.averageDcaPrice,
-          }),
-          {}
-        )
-    )
-    .sort((stat1, stat2) => moment(stat1.name) - moment(stat2.name));
+  const marketPrice = transformStatsToChartFormat(
+    statsGroupedByDayFilteredByTicker,
+    {
+      currentPrice: "current_price",
+    },
+    {
+      [`${ticker}CurrentPrice`]: "currentPrice",
+    }
+  );
+
+  const coinsPurchased = transformStatsToChartFormat(
+    statsGroupedByDayFilteredByTicker,
+    {
+      actualCoinAmount: "actual_coin_amount",
+    },
+    {
+      [`${ticker}CoinAmount`]: "actualCoinAmount",
+    }
+  );
+
+  const dcaComparisonAveragePrice = transformStatsToChartFormat(
+    statsGroupedByDayFilteredByTicker,
+    {
+      averageDcaPrice: "average_dca_price",
+    },
+    {
+      [`${ticker}AverageDcaPrice`]: "averageDcaPrice",
+    }
+  );
+
+  const savingsPercentages = transformStatsToChartFormat(
+    statsGroupedByDayFilteredByTicker,
+    {
+      savings: "savings_percent",
+    },
+    {
+      [ticker]: "savings",
+    }
+  );
 
   const totalSpend =
-    dollarsSpent[dollarsSpent.length - 1][`${ticker}TotalSpend`];
+    Math.round(dollarsSpent[dollarsSpent.length - 1][`${ticker}TotalSpend`]);
 
   const totalCoinsPurchased =
     coinsPurchased[coinsPurchased.length - 1][`${ticker}CoinAmount`];
 
   const limitStrategyPrice = Math.round(totalSpend / totalCoinsPurchased);
   const dcaComparisonPrice =
-    dcaComparisonAveragePrice[dcaComparisonAveragePrice.length - 1][
+    Math.round(dcaComparisonAveragePrice[dcaComparisonAveragePrice.length - 1][
       `${ticker}AverageDcaPrice`
-    ];
+    ]);
 
   const latestPrice = parseFloat(
     marketPrice[marketPrice.length - 1][`${ticker}CurrentPrice`]
   );
   const dcaComparisonCoinValue =
-    coinAmounts[coinAmounts.length - 1][`${ticker}Comparison`] * latestPrice;
+    Math.round(coinAmounts[coinAmounts.length - 1][`${ticker}Comparison`] * latestPrice);
   const actualCoinValue =
-    coinAmounts[coinAmounts.length - 1][`${ticker}Actual`] * latestPrice;
+    Math.round(coinAmounts[coinAmounts.length - 1][`${ticker}Actual`] * latestPrice);
+
+  const lastUpdated = moment(
+    statsGroupedByDayFilteredByTicker[
+      statsGroupedByDayFilteredByTicker.length - 1
+    ].datetime
+  );
+  const nextUpdate = moment(lastUpdated).add(24, "hours");
+
+  const hoursUntilUpdate = moment.duration(nextUpdate.diff(moment())).asHours();
 
   return {
     coinAmounts,
@@ -135,6 +146,8 @@ export const getStatsForTicker = ({ groupedStats, ticker }) => {
     latestPrice,
     dcaComparisonCoinValue,
     actualCoinValue,
-    ticker
+    ticker,
+    savingsPercentages,
+    hoursUntilUpdate,
   };
 };
