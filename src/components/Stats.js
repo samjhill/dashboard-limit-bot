@@ -131,8 +131,7 @@ export const Stats = () => {
         ))}
       </Flex>
       <Text mt="2">
-        Stats update in{" "}
-        {Math.round(findStatsForPair(selectedTicker).hoursUntilUpdate)} hours
+        Stats update every 24 hours
       </Text>
       <Flex
         flexDirection={["column", "row"]}
