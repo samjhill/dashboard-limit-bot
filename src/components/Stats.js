@@ -102,6 +102,10 @@ export const Stats = () => {
     findStatsForPair(selectedTicker).actualCoinValue -
     findStatsForPair(selectedTicker).totalSpend;
 
+  const comparisonProfit =
+    findStatsForPair(selectedTicker).dcaComparisonCoinValue -
+    findStatsForPair(selectedTicker).comparisonTotalSpend;
+
   if (statsForPairs.length !== tradingPairs.length) {
     return <Text as="h1">Loading stats</Text>;
   }
@@ -130,9 +134,7 @@ export const Stats = () => {
           </Link>
         ))}
       </Flex>
-      <Text mt="2">
-        Stats update every 24 hours
-      </Text>
+      <Text mt="2">Stats update every 24 hours</Text>
       <Flex
         flexDirection={["column", "row"]}
         mb="4"
@@ -142,31 +144,63 @@ export const Stats = () => {
       >
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Dollars spent</Text>
-          <Box>
-            {findStatsForPair(selectedTicker) && (
-              <Text key={selectedTicker}>
-                ${findStatsForPair(selectedTicker).totalSpend.toLocaleString()}
-              </Text>
-            )}
-          </Box>
+          <StatComparisonBox
+            statItems={[
+              {
+                title: "DCA",
+                statItem: `$
+                  ${findStatsForPair(
+                    selectedTicker
+                  ).comparisonTotalSpend.toLocaleString()}`,
+              },
+              {
+                title: "Limit",
+                statItem: `$
+                  ${findStatsForPair(
+                    selectedTicker
+                  ).totalSpend.toLocaleString()}`,
+              },
+            ]}
+          />
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Current value (USD)</Text>
-          <Box>
-            {findStatsForPair(selectedTicker) && (
-              <Text key={selectedTicker}>
-                $
-                {findStatsForPair(
-                  selectedTicker
-                ).actualCoinValue.toLocaleString()}
-              </Text>
-            )}
-          </Box>
+          <StatComparisonBox
+            statItems={[
+              {
+                title: "DCA",
+                statItem: `$
+                  ${findStatsForPair(
+                    selectedTicker
+                  ).dcaComparisonCoinValue.toLocaleString()}`,
+              },
+              {
+                title: "Limit",
+                statItem: `$
+                  ${findStatsForPair(
+                    selectedTicker
+                  ).actualCoinValue.toLocaleString()}`,
+              },
+            ]}
+          />
         </Box>
 
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Profit (USD)</Text>
-          <Box>${profit.toLocaleString()}</Box>
+          <StatComparisonBox
+            statItems={[
+              {
+                title: "DCA",
+                statItem: `$
+                  ${comparisonProfit.toLocaleString()}`,
+              },
+              {
+                title: "Limit",
+                statItem: `$
+                  ${profit.toLocaleString()}`,
+              },
+            ]}
+          />
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Coins purchased</Text>

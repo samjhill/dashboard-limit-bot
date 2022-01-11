@@ -64,6 +64,16 @@ export const getStatsForTicker = ({ groupedStats, ticker }) => {
     }
   );
 
+  const comparisonDollarsSpent = transformStatsToChartFormat(
+    statsGroupedByDayFilteredByTicker,
+    {
+      comparisonTotalSpend: "comparison_total_spend",
+    },
+    {
+      [`${ticker}ComparisonTotalSpend`]: "comparisonTotalSpend",
+    }
+  );
+
   const marketPrice = transformStatsToChartFormat(
     statsGroupedByDayFilteredByTicker,
     {
@@ -106,6 +116,9 @@ export const getStatsForTicker = ({ groupedStats, ticker }) => {
 
   const totalSpend =
     Math.round(dollarsSpent[dollarsSpent.length - 1][`${ticker}TotalSpend`]);
+  const comparisonTotalSpend = Math.round(
+    comparisonDollarsSpent[comparisonDollarsSpent.length - 1][`${ticker}ComparisonTotalSpend`]
+  );
 
   const totalCoinsPurchased =
     coinsPurchased[coinsPurchased.length - 1][`${ticker}CoinAmount`];
@@ -140,6 +153,7 @@ export const getStatsForTicker = ({ groupedStats, ticker }) => {
     coinsPurchased,
     dcaComparisonAveragePrice,
     totalSpend,
+    comparisonTotalSpend,
     totalCoinsPurchased,
     limitStrategyPrice,
     dcaComparisonPrice,
