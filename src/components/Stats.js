@@ -13,16 +13,30 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import {
-  Link,
-  useLocation
-} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { groupBy } from "underscore";
 import { API_URLS, ENV } from "../App";
 import { getTradingPairs } from "../helpers/tradingPairs";
 import { getStatsForTicker } from "../helpers/stats";
 import { COLORS } from "../helpers/colors";
 import { linkPrefix } from "../helpers/routes";
+
+// statItems: { title, statItem }[]
+const StatComparisonBox = ({ statItems }) => {
+  if (!statItems) {
+    return;
+  }
+  return (
+    <Flex>
+      {statItems.map((item) => (
+        <Flex flexDirection="column" mr="4">
+          <Text>{item.title}</Text>
+          <Text key={item.title}>{item.statItem}</Text>
+        </Flex>
+      ))}
+    </Flex>
+  );
+};
 
 export const Stats = () => {
   const location = useLocation();
@@ -33,7 +47,6 @@ export const Stats = () => {
   const selectedTicker = ticker === "*" ? "btcusd" : ticker;
   const [stats, setStats] = useState();
   const [tradingPairs, setTradingPairs] = useState();
-  
 
   useEffect(() => {
     async function fetchTradingPairs() {
@@ -74,16 +87,20 @@ export const Stats = () => {
     return <Text as="h1">Loading...</Text>;
   }
 
-  const statsForPairs = tradingPairs
-    .map(({ name, ticker }) => {
-      return getStatsForTicker({ groupedStats, ticker });
-    });
+  const statsForPairs = tradingPairs.map(({ name, ticker }) => {
+    return getStatsForTicker({ groupedStats, ticker });
+  });
 
   if (!statsForPairs) {
     return <Text as="h1">Loading...</Text>;
   }
 
-  const findStatsForPair = (ticker) => statsForPairs.find(stats => [stats.ticker].includes(ticker));
+  const findStatsForPair = (ticker) =>
+    statsForPairs.find((stats) => [stats.ticker].includes(ticker));
+
+  const profit =
+    findStatsForPair(selectedTicker).actualCoinValue -
+    findStatsForPair(selectedTicker).totalSpend;
 
   if (statsForPairs.length !== tradingPairs.length) {
     return <Text as="h1">Loading stats</Text>;
@@ -114,7 +131,8 @@ export const Stats = () => {
         ))}
       </Flex>
       <Text mt="2">
-        Stats update in {Math.round(findStatsForPair(selectedTicker).hoursUntilUpdate)} hours
+        Stats update in{" "}
+        {Math.round(findStatsForPair(selectedTicker).hoursUntilUpdate)} hours
       </Text>
       <Flex
         flexDirection={["column", "row"]}
@@ -146,6 +164,11 @@ export const Stats = () => {
             )}
           </Box>
         </Box>
+
+        <Box textAlign="left" p="2" minWidth="200px">
+          <Text as="h3">Profit (USD)</Text>
+          <Box>${profit.toLocaleString()}</Box>
+        </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Coins purchased</Text>
           {findStatsForPair(selectedTicker) && (
@@ -155,26 +178,25 @@ export const Stats = () => {
           )}
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
-          <Text as="h3">Price per coin: Dollar-Cost-Average strategy</Text>
-          {findStatsForPair(selectedTicker) && (
-            <Text key={selectedTicker}>
-              $
-              {findStatsForPair(
-                selectedTicker
-              ).dcaComparisonPrice.toLocaleString()}
-            </Text>
-          )}
-        </Box>
-        <Box textAlign="left" p="2" minWidth="200px">
-          <Text as="h3">Price per coin: Limit Strategy</Text>
-          {findStatsForPair(selectedTicker) && (
-            <Text key={selectedTicker}>
-              $
-              {findStatsForPair(
-                selectedTicker
-              ).limitStrategyPrice.toLocaleString()}
-            </Text>
-          )}
+          <Text as="h3">Price per coin</Text>
+          <StatComparisonBox
+            statItems={[
+              {
+                title: "DCA",
+                statItem: `$
+                  ${findStatsForPair(
+                    selectedTicker
+                  ).dcaComparisonPrice.toLocaleString()}`,
+              },
+              {
+                title: "Limit",
+                statItem: `$
+                  ${findStatsForPair(
+                    selectedTicker
+                  ).limitStrategyPrice.toLocaleString()}`,
+              },
+            ]}
+          />
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Advantage compared to DCA</Text>
