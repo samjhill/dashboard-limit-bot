@@ -30,7 +30,7 @@ const StatComparisonBox = ({ statItems }) => {
     <Flex>
       {statItems.map((item) => (
         <Flex flexDirection="column" mr="4">
-          <Text>{item.title}</Text>
+          <Text color={item.color || "text"}>{item.title}</Text>
           <Text key={item.title}>{item.statItem}</Text>
         </Flex>
       ))}
@@ -128,14 +128,15 @@ export const Stats = () => {
           <StatComparisonBox
             statItems={[
               {
-                title: "DCA",
+                title: "comparison",
                 statItem: `$
                   ${findStatsForPair(
                     selectedTicker
                   ).comparisonTotalSpend.toLocaleString()}`,
               },
               {
-                title: "Limit",
+                title: "actual",
+                color: COLORS[selectedTicker],
                 statItem: `$
                   ${findStatsForPair(
                     selectedTicker
@@ -149,14 +150,15 @@ export const Stats = () => {
           <StatComparisonBox
             statItems={[
               {
-                title: "DCA",
+                title: "comparison",
                 statItem: `$
                   ${findStatsForPair(
                     selectedTicker
                   ).dcaComparisonCoinValue.toLocaleString()}`,
               },
               {
-                title: "Limit",
+                title: "actual",
+                color: COLORS[selectedTicker],
                 statItem: `$
                   ${findStatsForPair(
                     selectedTicker
@@ -171,12 +173,13 @@ export const Stats = () => {
           <StatComparisonBox
             statItems={[
               {
-                title: "DCA",
+                title: "comparison",
                 statItem: `$
                   ${comparisonProfit.toLocaleString()}`,
               },
               {
-                title: "Limit",
+                title: "actual",
+                color: COLORS[selectedTicker],
                 statItem: `$
                   ${profit.toLocaleString()}`,
               },
@@ -196,14 +199,15 @@ export const Stats = () => {
           <StatComparisonBox
             statItems={[
               {
-                title: "DCA",
+                title: "comparison",
                 statItem: `$
                   ${findStatsForPair(
                     selectedTicker
                   ).dcaComparisonPrice.toLocaleString()}`,
               },
               {
-                title: "Limit",
+                title: "actual",
+                color: COLORS[selectedTicker],
                 statItem: `$
                   ${findStatsForPair(
                     selectedTicker
