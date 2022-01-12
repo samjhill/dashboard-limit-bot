@@ -13,13 +13,13 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { groupBy } from "underscore";
 import { API_URLS, ENV } from "../App";
 import { getTradingPairs } from "../helpers/tradingPairs";
 import { getStatsForTicker } from "../helpers/stats";
 import { COLORS } from "../helpers/colors";
-import { linkPrefix } from "../helpers/routes";
+import { TradingPairSelector } from "../components/TradingPairSelector";
 
 // statItems: { title, statItem }[]
 const StatComparisonBox = ({ statItems }) => {
@@ -113,26 +113,7 @@ export const Stats = () => {
   return (
     <>
       <Flex>
-        {tradingPairs.map(({ name, ticker }) => (
-          <Link
-            to={`${linkPrefix}/stats/${ticker}`}
-            style={{ textDecoration: "none" }}
-            key={ticker}
-          >
-            <Box
-              p={2}
-              m={1}
-              sx={{
-                color: selectedTicker === ticker ? "white" : COLORS[ticker],
-                border: `1px solid ${COLORS[ticker]}`,
-                background: selectedTicker === ticker && COLORS[ticker],
-                fontWeight: "bold",
-              }}
-            >
-              {name}
-            </Box>
-          </Link>
-        ))}
+        <TradingPairSelector path="stats" />
       </Flex>
       <Text mt="2">Stats update every 24 hours</Text>
       <Flex
