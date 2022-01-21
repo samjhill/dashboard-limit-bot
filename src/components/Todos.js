@@ -14,7 +14,11 @@ export const Todos = () => {
       title: "Add integration with traditional stock broker",
     },
     {
-      title: "Add per-item settings for finer-grain control and customization of limit orders",
+      title:
+        "Add per-item settings for finer-grain control and customization of limit orders",
+    },
+    {
+      title: "Update gemini client to https://github.com/mtusman/gemini-python",
     },
   ];
   return (

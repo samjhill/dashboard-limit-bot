@@ -145,7 +145,7 @@ export const OpenOrders = () => {
       <Text textAlign="left" ml="2" mb="4">
         If the asset's{" "}
         <span style={{ color: "green", fontWeight: "bold" }}>
-          price (green line)
+          price
         </span>{" "}
         drops down to any of the{" "}
         <strong>white dots (open limit-buy orders)</strong>, the buy order gets
