@@ -3,6 +3,10 @@ html {
   color: #ebebeb;
 }
 
+a {
+  color: pink;
+}
+
 .App {
   text-align: center;
 }
