@@ -1,4 +1,5 @@
 import { Text, Box } from "rebass";
+import { COLORS } from "../helpers/colors";
 import { BuildLog } from "./BuildLog";
 import { Todos } from "./Todos";
 
@@ -8,7 +9,7 @@ export const About = () => {
     <Box ml="2">
       <Box backgroundColor="#0000001f" maxWidth="800px" p="2">
         <Text as="h1" textAlign="left" ml="2" mb="4" mt="4">
-          Buy the Dip Bot
+          <Text color={COLORS.btc} as="span">Buy the Dip </Text> Bot
         </Text>
         <Text textAlign="left" ml="2" mb="2">
           Hi, I'm the dashboard for an asset-buying robot.

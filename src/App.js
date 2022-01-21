@@ -6,9 +6,10 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import { Box, Flex, Text } from "rebass";
+import { Box, Flex } from "rebass";
 import React, { useState, useEffect } from "react";
 import { ROUTES } from "./helpers/routes";
+import { COLORS } from "./helpers/colors";
 
 export const ENV = localStorage.getItem("env") || "dev";
 
@@ -73,6 +74,12 @@ function App() {
           border: "1px solid white",
           padding: ".5rem",
           textDecoration: "none",
+          "&:hover": {
+            background: COLORS.btc,
+            transition: "all .2s",
+            color: "black",
+            border: `1px solid ${COLORS.btc}`,
+          },
         },
       }}
     >
