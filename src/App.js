@@ -125,8 +125,8 @@ function App() {
       <Router>
         <div>
           <Flex p="2">
-            <EnvSelector />
-            <Box ml="3">
+            {/* <EnvSelector /> */}
+            {/* <Box ml="3">
               <label>
                 <input
                   checked={dashboardMode}
@@ -144,7 +144,7 @@ function App() {
               <Text>
                 Flips through the pages every {dashboardInterval / 1000} seconds
               </Text>
-            </Box>
+            </Box> */}
           </Flex>
           <Links />
           <Routes>

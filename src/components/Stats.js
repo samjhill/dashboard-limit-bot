@@ -218,6 +218,7 @@ export const Stats = () => {
         </Box>
         <Box textAlign="left" p="2" minWidth="200px">
           <Text as="h3">Advantage compared to DCA</Text>
+          <Text>percentage dollars saved per coin</Text>
           <Text>
             {
               findStatsForPair(selectedTicker)?.savingsPercentages[
