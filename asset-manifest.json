@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/dashboard-limit-bot/static/css/main.601f5f48.chunk.css",
+    "main.css": "/dashboard-limit-bot/static/css/main.38f358f2.chunk.css",
     "main.js": "/dashboard-limit-bot/static/js/main.8cc5b3b9.chunk.js",
     "main.js.map": "/dashboard-limit-bot/static/js/main.8cc5b3b9.chunk.js.map",
     "runtime-main.js": "/dashboard-limit-bot/static/js/runtime-main.1789bff2.js",
@@ -10,13 +10,13 @@
     "static/js/3.3f0b238a.chunk.js": "/dashboard-limit-bot/static/js/3.3f0b238a.chunk.js",
     "static/js/3.3f0b238a.chunk.js.map": "/dashboard-limit-bot/static/js/3.3f0b238a.chunk.js.map",
     "index.html": "/dashboard-limit-bot/index.html",
-    "static/css/main.601f5f48.chunk.css.map": "/dashboard-limit-bot/static/css/main.601f5f48.chunk.css.map",
+    "static/css/main.38f358f2.chunk.css.map": "/dashboard-limit-bot/static/css/main.38f358f2.chunk.css.map",
     "static/js/2.6ee9feba.chunk.js.LICENSE.txt": "/dashboard-limit-bot/static/js/2.6ee9feba.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1789bff2.js",
     "static/js/2.6ee9feba.chunk.js",
-    "static/css/main.601f5f48.chunk.css",
+    "static/css/main.38f358f2.chunk.css",
     "static/js/main.8cc5b3b9.chunk.js"
   ]
 }
