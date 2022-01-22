@@ -116,7 +116,7 @@ export const Trades = () => {
                           stroke={COLORS[ticker]}
                           alwaysShow={true}
                           label={{
-                            value: `current price - $${prices[ticker]}`,
+                            value: `current price - $${prices[ticker].toLocaleString()}`,
                             fill: "white",
                           }}
                           color="white"

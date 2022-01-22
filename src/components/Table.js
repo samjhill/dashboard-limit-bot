@@ -4,7 +4,7 @@ export const Table = ({ headers, rows }) => {
         <thead>
           <tr>
             {headers.map((header) => (
-              <th>{header}</th>
+              <th key={header}>{header}</th>
             ))}
           </tr>
         </thead>
@@ -13,6 +13,7 @@ export const Table = ({ headers, rows }) => {
             <tr key={index}>
               {row.map((cell) => (
                 <td
+                  key={cell}
                   style={{
                     padding: ".25rem",
                   }}

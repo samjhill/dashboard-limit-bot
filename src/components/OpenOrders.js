@@ -48,7 +48,7 @@ export const OrderChart = ({ ticker, name, data, orders, currentPrice }) => {
                     stroke={COLORS[ticker]}
                     alwaysShow={true}
                     label={{
-                      value: `current price - $${currentPrice}`,
+                      value: `current price - $${currentPrice.toLocaleString()}`,
                       fill: "white",
                     }}
                     color="white"
@@ -62,12 +62,12 @@ export const OrderChart = ({ ticker, name, data, orders, currentPrice }) => {
       </Box>
 
       <Box key={ticker} ml="2" width={[1, 1 / 2]}>
-        {orders[ticker] && (
+        {orders && (
           <Table
             headers={["Placed on", "Price", "Amount"]}
-            rows={Object.values(orders[ticker]).map((trade) => [
+            rows={orders.map((trade) => [
               trade.datetime,
-              `${trade.price}`,
+              `$${trade.price.toLocaleString()}`,
               trade.remaining_amount,
             ])}
           />
@@ -156,6 +156,7 @@ export const OpenOrders = () => {
       <Flex width={1} flexDirection={["column", "row"]}>
         {tradingPairs.map((pair) => (
           <OrderChart
+            key={pair.ticker}
             ticker={pair.ticker}
             name={pair.name}
             data={orders[pair.ticker]}
