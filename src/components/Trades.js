@@ -116,7 +116,9 @@ export const Trades = () => {
                           stroke={COLORS[ticker]}
                           alwaysShow={true}
                           label={{
-                            value: `current price - $${prices[ticker].toLocaleString()}`,
+                            value: `current price - $${prices[
+                              ticker
+                            ].toLocaleString()}`,
                             fill: "white",
                           }}
                           color="white"
@@ -135,7 +137,11 @@ export const Trades = () => {
                   headers={["Date", "Price", "Amount"]}
                   rows={Object.values(trades[ticker])
                     .reverse()
-                    .map((trade) => ([trade.datetime, `$${trade.price}`, trade.amount]))}
+                    .map((trade) => [
+                      trade.datetime,
+                      `$${parseFloat(trade.price).toLocaleString()}`,
+                      trade.amount,
+                    ])}
                 />
               )}
             </Box>

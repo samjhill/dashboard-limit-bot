@@ -67,7 +67,7 @@ export const OrderChart = ({ ticker, name, data, orders, currentPrice }) => {
             headers={["Placed on", "Price", "Amount"]}
             rows={orders.map((trade) => [
               trade.datetime,
-              `$${trade.price.toLocaleString()}`,
+              `$${parseFloat(trade.price).toLocaleString()}`,
               trade.remaining_amount,
             ])}
           />
