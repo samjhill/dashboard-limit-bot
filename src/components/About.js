@@ -34,10 +34,10 @@ export const About = () => {
           </ul>
         </Text>
       </Box>
+      <Todos />
 
       <BuildLog />
 
-      <Todos />
     </Box>
   );
 };
