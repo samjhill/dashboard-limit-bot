@@ -9,13 +9,16 @@ export const About = () => {
     <Box ml="2">
       <Box backgroundColor="#0000001f" maxWidth="800px" p="2">
         <Text as="h1" textAlign="left" ml="2" mb="4" mt="4">
-          <Text color={COLORS.btc} as="span">Buy the Dip </Text> Bot
+          <Text color={COLORS.btc} as="span">
+            Buy the Dip{" "}
+          </Text>{" "}
+          Bot
         </Text>
         <Text textAlign="left" ml="2" mb="2">
           Hi, I'm the dashboard for an asset-buying robot.
         </Text>
 
-        <Text as="h4" textAlign="left" ml="2" mb="5">
+        <Text as="h4" textAlign="left" ml="2" mb="2">
           The goal is to get the best price for a given asset by using a limit
           strategy:
           <ul>
@@ -33,11 +36,14 @@ export const About = () => {
             <li>if an order gets executed or cancelled, start again</li>
           </ul>
         </Text>
+
+        <Text textAlign="left" ml="2" mb="5">
+          Created by <a href="https://github.com/samjhill" target="_blank">Sam Hill</a>
+        </Text>
       </Box>
       <Todos />
 
       <BuildLog />
-
     </Box>
   );
 };
