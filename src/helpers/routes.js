@@ -3,6 +3,7 @@ import { Stats } from "../components/Stats";
 import { Trades } from "../components/Trades";
 import { OpenOrders } from "../components/OpenOrders";
 import { About } from "../components/About";
+import { Backtest } from "../components/Backtest";
 
 export const linkPrefix =
   process.env.NODE_ENV === "development" ? "" : "/dashboard-limit-bot";
@@ -28,6 +29,11 @@ export const ROUTES = [
     path: `${linkPrefix}/trades`,
     display: "Buy History",
     element: <Trades />,
+  },
+  {
+    path:`${linkPrefix}/backtest`,
+    display: "Backtest",
+    element: <Backtest />
   },
   {
     path: `${linkPrefix}/configuration`,
