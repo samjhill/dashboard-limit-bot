@@ -19,6 +19,11 @@ const LogEntry = ({ title, text, date }) => {
 export const BuildLog = () => {
     const LogEntries = [
       {
+        title: "Much ado about Nine Dollars",
+        text: "This bot was <a target='_blank' href='https://cointelegraph.com/news/trader-builds-bitcoin-buy-the-dip-bot-outperforms-dca'>featured in the news!</a> I'm honored. It was a big day for the bot, having outperformed a DCA in dollar-terms over the same time period. Of course, this is all still early stages, and small amounts of money. And it's my first bot. But this is the first time someone inverviewed me and wrote an article about my work. I'm blown away. ",
+        date: "Tue Feb 8, 2022",
+      },
+      {
         title: "Added backtesting",
         text: "I integrated with <a target='_blank' href='https://github.com/samjhill/backtesting.py'>a backtesting library!</a> So far, it's helped me nail down how long to let orders stay open before refreshing them.",
         date: "Sun Feb 6, 2022",
