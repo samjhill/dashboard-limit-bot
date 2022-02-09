@@ -1,6 +1,7 @@
-import { Text, Box } from "rebass";
+import { Text, Box, Button, Flex } from "rebass";
 import { COLORS } from "../helpers/colors";
 import { BuildLog } from "./BuildLog";
+import { MailingList } from "./MailingList";
 import { Todos } from "./Todos";
 
 export const About = () => {
@@ -37,10 +38,45 @@ export const About = () => {
           </ul>
         </Text>
 
-        <Text textAlign="left" ml="2" mb="5">
-          Created by <a href="https://github.com/samjhill" target="_blank">Sam Hill</a>
-        </Text>
+        <Flex>
+          <Text textAlign="left" ml="2" mb="5" mt="2">
+            Created by{" "}
+            <a href="https://github.com/samjhill" target="_blank">
+              Sam Hill
+            </a>
+          </Text>
+
+          <Button
+            sx={{
+              cursor: "pointer",
+            }}
+            ml="4"
+            backgroundColor="orange"
+            fontWeight="bold"
+            height="2.5rem"
+            onClick={() =>
+              window.open(
+                "mailto:samuhill+limitBot@gmail.com?subject=Buy%20the%20Dip%20Bot"
+              )
+            }
+          >
+            Contact me
+          </Button>
+        </Flex>
       </Box>
+
+      <Box backgroundColor="#0000001f" maxWidth="800px" p="2" mt="2" textAlign="left">
+        <Text as="h2">FAQs</Text>
+        <Box mt="3" mb="2">
+          <Text as="h3" mb="2">How do I use this bot?</Text>
+          <Text>You can't. It's still in development. But if you sign up for the mailing list, I'll keep you updated!</Text>
+        </Box>
+
+      </Box>
+      <Box backgroundColor="#0000001f" maxWidth="800px" p="2" mt="2">
+        <MailingList />
+      </Box>
+
       <Todos />
 
       <BuildLog />
