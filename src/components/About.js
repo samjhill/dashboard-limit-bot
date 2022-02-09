@@ -39,7 +39,7 @@ export const About = () => {
         </Text>
 
         <Flex>
-          <Text textAlign="left" ml="2" mb="5" mt="2">
+          <Text textAlign="left" ml="2" mb="3" mt="2">
             Created by{" "}
             <a href="https://github.com/samjhill" target="_blank">
               Sam Hill
